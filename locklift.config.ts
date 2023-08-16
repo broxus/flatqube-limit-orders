@@ -26,22 +26,29 @@ const config: LockliftConfig = {
     // path: "/mnt/o/projects/broxus/TON-Solidity-Compiler/build/solc/solc",
 
     // Or specify version of compiler
-    version: "0.62.0",
+    version: "0.64.0",
 
-    // Specify config for extarnal contracts as in exapmple
-    // externalContracts: {
-    //   "node_modules/broxus-ton-tokens-contracts/build": ['TokenRoot', 'TokenWallet']
-    // }
+    externalContracts: {
+      precompiled: ['OrderRootPlatform, OrderPlatform'],
+      'node_modules/dex/build': [
+        'TokenFactory',
+        'DexTokenVault',
+        'DexVault',
+        'DexRoot',
+        'DexPlatform',
+        'DexPair',
+        'DexAccount',
+        'LpTokenPending'
+      ],
+      'node_modules/tip3/build': [
+        'TokenRootUpgradeable',
+        'TokenWalletUpgradeable',
+        'TokenWalletPlatform',
+      ],
+      'node_modules/ever-wever/everscale/build': [],
+    }
   },
-  linker: {
-    // Specify path to your stdlib
-    // lib: "/mnt/o/projects/broxus/TON-Solidity-Compiler/lib/stdlib_sol.tvm",
-    // // Specify path to your Linker
-    // path: "/mnt/o/projects/broxus/TVM-linker/target/release/tvm_linker",
-
-    // Or specify version of linker
-    version: "0.15.48",
-  },
+  linker: { version: "0.16.5" },
   networks: {
     local: {
       // Specify connection settings for https://github.com/broxus/everscale-standalone-client/
