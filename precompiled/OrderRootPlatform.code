@@ -1,4 +1,4 @@
-.version sol 0.64.0
+.version sol 0.62.0
 
 .macro constructor
 DROP
@@ -12,12 +12,12 @@ THROWIF 51
 OVER
 PUSHCONT {
 	LDU 32
-	LDREF
-	ENDS
-	CTOS
 	LDU 32
 	LDREF
 	LDREF
+	LDREF
+	ENDS
+	CTOS
 	LDMSGADDR
 	LDU 128
 	LDU 128
@@ -47,19 +47,25 @@ TUPLE 5
 SWAP
 LDREF
 ENDS
-.loc ../contracts/OrderRootPlatform.tsol, 25
+.loc ../contracts/OrderRootPlatform.tsol, 24
+GETGLOB 9
+PARSEMSGADDR
+INDEX 3
+PLDU 256
+NEQINT 0
 GETGLOB 9
 GETGLOB 10
 SDEQ
+AND
 PUSHCONT {
-	.loc ../contracts/OrderRootPlatform.tsol, 26
+	.loc ../contracts/OrderRootPlatform.tsol, 25
 	BLKPUSH 7, 6
 	CALLREF {
 		CALL $initialize_e81a2cb4_internal_macro$
 	}
 }
 PUSHCONT {
-	.loc ../contracts/OrderRootPlatform.tsol, 28
+	.loc ../contracts/OrderRootPlatform.tsol, 27
 	PUSH S2
 	NEWC
 	STSLICECONST x42_
@@ -85,7 +91,7 @@ THROW 0
 CALL $initialize_e81a2cb4_internal_macro$
 
 .macro initialize_e81a2cb4_internal_macro
-.loc ../contracts/OrderRootPlatform.tsol, 45
+.loc ../contracts/OrderRootPlatform.tsol, 44
 GETGLOB 12
 ROLL 6
 XCHG S2, S5
@@ -129,10 +135,10 @@ STBREFR
 STBREFR
 STBREFR
 ENDC
-.loc ../contracts/OrderRootPlatform.tsol, 50
+.loc ../contracts/OrderRootPlatform.tsol, 49
 OVER
 SETCODE
-.loc ../contracts/OrderRootPlatform.tsol, 51
+.loc ../contracts/OrderRootPlatform.tsol, 50
 SWAP
 CTOS
 DUP
@@ -147,7 +153,7 @@ PLDREF
 CTOS
 BLESS
 POP C3
-.loc ../contracts/OrderRootPlatform.tsol, 53
+.loc ../contracts/OrderRootPlatform.tsol, 52
 CALLREF {
 	CALL $:onCodeUpgrade$
 }
@@ -325,14 +331,9 @@ LDU 1 ; haveSign msgSlice
 SWAP
 PUSHCONT {
 	PUSHPOW2 9
-	LDSLICEX
+	LDSLICEX ; signatureSlice msgSlice
 	DUP
-	MYADDR
-	NEWC
-	STSLICE
-	STSLICE
-	ENDC
-	HASHCU
+	HASHSU ; signatureSlice msgSlice hashMsgSlice
 	SWAP
 	LDU 1 ; signatureSlice hashMsgSlice hasPubkey msgSlice
 	SWAP
@@ -346,7 +347,7 @@ PUSHCONT {
 		GETGLOB 2
 	}
 	IFELSE
-	CHKSIGNU
+	CHKSIGNU ; msgSlice isSigned
 	THROWIFNOT 40
 }
 PUSHCONT {
