@@ -1466,6 +1466,32 @@
         "line": 563
       }
     },
+    "102854519f9952a95af270abd75561d0ad2f29869a7d03fed457089a37ce8e80": {
+      "40": {
+        "filename": "../contracts/Order.tsol",
+        "line": 1397
+      },
+      "48": {
+        "filename": "../contracts/Order.tsol",
+        "line": 1397
+      },
+      "64": {
+        "filename": "../contracts/Order.tsol",
+        "line": 1397
+      },
+      "72": {
+        "filename": "../contracts/Order.tsol",
+        "line": 1397
+      },
+      "88": {
+        "filename": "../contracts/Order.tsol",
+        "line": 1397
+      },
+      "96": {
+        "filename": "../contracts/Order.tsol",
+        "line": 1397
+      }
+    },
     "117bd21787f8a687f7083a8e6fb9cf2f76e60996823ab594d9325f36afdcb00e": {
       "0": {
         "filename": "../contracts/Order.tsol",
@@ -8566,8 +8592,8 @@
     },
     "61ab4641fa30d9310391025086eec65d200d79268e1b7cd402565e01ba64be3c": {
       "0": {
-        "filename": "Order.code",
-        "line": 6003
+        "filename": "../contracts/Order.tsol",
+        "line": 159
       }
     },
     "62835e2bfe3d5c638612bfb7f6b031f23348404a9d18ddefc68d6e2a62642cd1": {
@@ -13447,32 +13473,6 @@
       "0": {
         "filename": "../contracts/Order.tsol",
         "line": 107
-      }
-    },
-    "a2dc6632c3f25b186238ca113c6bd23a7d9b94898fe6ac819e06d8cd8e34baff": {
-      "4": {
-        "filename": "../contracts/Order.tsol",
-        "line": 1397
-      },
-      "12": {
-        "filename": "../contracts/Order.tsol",
-        "line": 1397
-      },
-      "28": {
-        "filename": "../contracts/Order.tsol",
-        "line": 1397
-      },
-      "36": {
-        "filename": "../contracts/Order.tsol",
-        "line": 1397
-      },
-      "52": {
-        "filename": "../contracts/Order.tsol",
-        "line": 1397
-      },
-      "60": {
-        "filename": "../contracts/Order.tsol",
-        "line": 1397
       }
     },
     "a4535948fcf2ca6d54158aaec7d2f0116c3d36439ad0e34f170faeedfbf83f13": {

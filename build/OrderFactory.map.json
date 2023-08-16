@@ -2712,6 +2712,76 @@
         "line": 1333
       }
     },
+    "23c8ca47cb1cdbc6dffbdd47a40f1c81c395e271c69e547e6a6df8f7457847b7": {
+      "4": {
+        "filename": "../contracts/OrderFactory.tsol",
+        "line": 539
+      },
+      "52": {
+        "filename": "../contracts/OrderFactory.tsol",
+        "line": 539
+      },
+      "60": {
+        "filename": "../contracts/OrderFactory.tsol",
+        "line": 539
+      },
+      "76": {
+        "filename": "../contracts/OrderFactory.tsol",
+        "line": 540
+      },
+      "84": {
+        "filename": "../contracts/OrderFactory.tsol",
+        "line": 540
+      },
+      "100": {
+        "filename": "../contracts/OrderFactory.tsol",
+        "line": 540
+      },
+      "108": {
+        "filename": "../contracts/OrderFactory.tsol",
+        "line": 540
+      },
+      "124": {
+        "filename": "../contracts/OrderFactory.tsol",
+        "line": 540
+      },
+      "132": {
+        "filename": "../contracts/OrderFactory.tsol",
+        "line": 540
+      },
+      "148": {
+        "filename": "../contracts/OrderFactory.tsol",
+        "line": 540
+      },
+      "156": {
+        "filename": "../contracts/OrderFactory.tsol",
+        "line": 540
+      },
+      "172": {
+        "filename": "../contracts/OrderFactory.tsol",
+        "line": 540
+      },
+      "180": {
+        "filename": "../contracts/OrderFactory.tsol",
+        "line": 540
+      },
+      "196": {
+        "filename": "../contracts/OrderFactory.tsol",
+        "line": 540
+      },
+      "204": {
+        "filename": "../contracts/OrderFactory.tsol",
+        "line": 540
+      },
+      "220": {
+        "filename": "../contracts/OrderFactory.tsol",
+        "line": 540
+      },
+      "228": {
+        "filename": "../contracts/OrderFactory.tsol",
+        "line": 540
+      }
+    },
     "24ef95c7674cf4c99715c1f1d1960eb2a0a73b410dda200ae21d2732aedaa698": {
       "0": {
         "filename": "OrderFactory.code",
@@ -4692,8 +4762,8 @@
     },
     "61ab4641fa30d9310391025086eec65d200d79268e1b7cd402565e01ba64be3c": {
       "0": {
-        "filename": "OrderFactory.code",
-        "line": 3560
+        "filename": "../contracts/OrderFactory.tsol",
+        "line": 540
       }
     },
     "63616853049d6d77a155e92432ce549286525d47bcbb1eed1c1a388d930b0eb9": {
@@ -8029,76 +8099,6 @@
       "496": {
         "filename": "../contracts/OrderFactory.tsol",
         "line": 83
-      }
-    },
-    "b68932bf66eb2ca8d13d11ec9f5d056056a8df95687f67673ced7c2d193fe1ec": {
-      "38": {
-        "filename": "../contracts/OrderFactory.tsol",
-        "line": 539
-      },
-      "86": {
-        "filename": "../contracts/OrderFactory.tsol",
-        "line": 539
-      },
-      "94": {
-        "filename": "../contracts/OrderFactory.tsol",
-        "line": 539
-      },
-      "110": {
-        "filename": "../contracts/OrderFactory.tsol",
-        "line": 540
-      },
-      "118": {
-        "filename": "../contracts/OrderFactory.tsol",
-        "line": 540
-      },
-      "134": {
-        "filename": "../contracts/OrderFactory.tsol",
-        "line": 540
-      },
-      "142": {
-        "filename": "../contracts/OrderFactory.tsol",
-        "line": 540
-      },
-      "158": {
-        "filename": "../contracts/OrderFactory.tsol",
-        "line": 540
-      },
-      "166": {
-        "filename": "../contracts/OrderFactory.tsol",
-        "line": 540
-      },
-      "182": {
-        "filename": "../contracts/OrderFactory.tsol",
-        "line": 540
-      },
-      "190": {
-        "filename": "../contracts/OrderFactory.tsol",
-        "line": 540
-      },
-      "206": {
-        "filename": "../contracts/OrderFactory.tsol",
-        "line": 540
-      },
-      "214": {
-        "filename": "../contracts/OrderFactory.tsol",
-        "line": 540
-      },
-      "230": {
-        "filename": "../contracts/OrderFactory.tsol",
-        "line": 540
-      },
-      "238": {
-        "filename": "../contracts/OrderFactory.tsol",
-        "line": 540
-      },
-      "254": {
-        "filename": "../contracts/OrderFactory.tsol",
-        "line": 540
-      },
-      "262": {
-        "filename": "../contracts/OrderFactory.tsol",
-        "line": 540
       }
     },
     "b7243d6ea8c40ea27351c11522c465cdbd97c9e1de4d253ca5c0a378d2e55c14": {

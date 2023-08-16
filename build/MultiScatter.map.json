@@ -1493,7 +1493,7 @@
     "61ab4641fa30d9310391025086eec65d200d79268e1b7cd402565e01ba64be3c": {
       "0": {
         "filename": "MultiScatter.code",
-        "line": 1134
+        "line": 1247
       }
     },
     "61f6c23954ff8ab23a8e59943185934536d70ecb97539a6c90edb46f0f74e44d": {
@@ -3653,6 +3653,24 @@
         "line": 235
       }
     },
+    "bcd479ffc0661a2fd974ef77e071e6d358e73a3c2b213b5ada6af5fb1170e70c": {
+      "4": {
+        "filename": "MultiScatter.code",
+        "line": 1082
+      },
+      "12": {
+        "filename": "MultiScatter.code",
+        "line": 1084
+      },
+      "28": {
+        "filename": "MultiScatter.code",
+        "line": 1087
+      },
+      "44": {
+        "filename": "MultiScatter.code",
+        "line": 1088
+      }
+    },
     "c0d7cade1208acae61bfcb13c10ba2c983fa593adb4411f9a660ec5470cebd9d": {
       "0": {
         "filename": "../contracts/libraries/MultiScatterPayload.tsol",
@@ -4565,24 +4583,6 @@
       "688": {
         "filename": "MultiScatter.code",
         "line": 71
-      }
-    },
-    "d57abefbb87a5097ee9b6d99e2ae559831fccdac033b7d2885a3d4cf6b3c97b4": {
-      "40": {
-        "filename": "MultiScatter.code",
-        "line": 1082
-      },
-      "48": {
-        "filename": "MultiScatter.code",
-        "line": 1084
-      },
-      "64": {
-        "filename": "MultiScatter.code",
-        "line": 1087
-      },
-      "80": {
-        "filename": "MultiScatter.code",
-        "line": 1088
       }
     },
     "e0ddefbfde83ff6990a15d7df4efa0074eba08cc3a36408034f72a9964b5b8dc": {

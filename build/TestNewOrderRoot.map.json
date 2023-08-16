@@ -752,6 +752,284 @@
         "line": 1887
       }
     },
+    "1f1d917a2c336007b3b3bdbfc05cf3bee506383ae293ac3d84768a6938e4619d": {
+      "4": {
+        "filename": "../contracts/tests/TestNewOrderRoot.tsol",
+        "line": 241
+      },
+      "52": {
+        "filename": "../contracts/tests/TestNewOrderRoot.tsol",
+        "line": 241
+      },
+      "60": {
+        "filename": "../contracts/tests/TestNewOrderRoot.tsol",
+        "line": 241
+      },
+      "76": {
+        "filename": "../contracts/tests/TestNewOrderRoot.tsol",
+        "line": 246
+      },
+      "84": {
+        "filename": "../contracts/tests/TestNewOrderRoot.tsol",
+        "line": 246
+      },
+      "100": {
+        "filename": "../contracts/tests/TestNewOrderRoot.tsol",
+        "line": 246
+      },
+      "108": {
+        "filename": "../contracts/tests/TestNewOrderRoot.tsol",
+        "line": 246
+      },
+      "116": {
+        "filename": "../contracts/tests/TestNewOrderRoot.tsol",
+        "line": 246
+      },
+      "124": {
+        "filename": "../contracts/tests/TestNewOrderRoot.tsol",
+        "line": 246
+      },
+      "140": {
+        "filename": "../contracts/tests/TestNewOrderRoot.tsol",
+        "line": 246
+      },
+      "148": {
+        "filename": "../contracts/tests/TestNewOrderRoot.tsol",
+        "line": 246
+      },
+      "156": {
+        "filename": "../contracts/tests/TestNewOrderRoot.tsol",
+        "line": 246
+      },
+      "164": {
+        "filename": "../contracts/tests/TestNewOrderRoot.tsol",
+        "line": 246
+      },
+      "180": {
+        "filename": "../contracts/tests/TestNewOrderRoot.tsol",
+        "line": 246
+      },
+      "196": {
+        "filename": "../contracts/tests/TestNewOrderRoot.tsol",
+        "line": 246
+      },
+      "212": {
+        "filename": "../contracts/tests/TestNewOrderRoot.tsol",
+        "line": 246
+      },
+      "228": {
+        "filename": "../contracts/tests/TestNewOrderRoot.tsol",
+        "line": 246
+      },
+      "236": {
+        "filename": "../contracts/tests/TestNewOrderRoot.tsol",
+        "line": 246
+      },
+      "244": {
+        "filename": "../contracts/tests/TestNewOrderRoot.tsol",
+        "line": 246
+      },
+      "252": {
+        "filename": "../contracts/tests/TestNewOrderRoot.tsol",
+        "line": 246
+      },
+      "268": {
+        "filename": "../contracts/tests/TestNewOrderRoot.tsol",
+        "line": 246
+      },
+      "284": {
+        "filename": "../contracts/tests/TestNewOrderRoot.tsol",
+        "line": 246
+      },
+      "300": {
+        "filename": "../contracts/tests/TestNewOrderRoot.tsol",
+        "line": 246
+      },
+      "316": {
+        "filename": "../contracts/tests/TestNewOrderRoot.tsol",
+        "line": 246
+      },
+      "324": {
+        "filename": "../contracts/tests/TestNewOrderRoot.tsol",
+        "line": 246
+      },
+      "332": {
+        "filename": "../contracts/tests/TestNewOrderRoot.tsol",
+        "line": 246
+      },
+      "340": {
+        "filename": "../contracts/tests/TestNewOrderRoot.tsol",
+        "line": 246
+      },
+      "356": {
+        "filename": "../contracts/tests/TestNewOrderRoot.tsol",
+        "line": 246
+      },
+      "372": {
+        "filename": "../contracts/tests/TestNewOrderRoot.tsol",
+        "line": 246
+      },
+      "388": {
+        "filename": "../contracts/tests/TestNewOrderRoot.tsol",
+        "line": 246
+      },
+      "404": {
+        "filename": "../contracts/tests/TestNewOrderRoot.tsol",
+        "line": 246
+      },
+      "412": {
+        "filename": "../contracts/tests/TestNewOrderRoot.tsol",
+        "line": 246
+      },
+      "420": {
+        "filename": "../contracts/tests/TestNewOrderRoot.tsol",
+        "line": 246
+      },
+      "428": {
+        "filename": "../contracts/tests/TestNewOrderRoot.tsol",
+        "line": 246
+      },
+      "436": {
+        "filename": "../contracts/tests/TestNewOrderRoot.tsol",
+        "line": 246
+      },
+      "444": {
+        "filename": "../contracts/tests/TestNewOrderRoot.tsol",
+        "line": 246
+      },
+      "460": {
+        "filename": "../contracts/tests/TestNewOrderRoot.tsol",
+        "line": 246
+      },
+      "476": {
+        "filename": "../contracts/tests/TestNewOrderRoot.tsol",
+        "line": 246
+      },
+      "492": {
+        "filename": "../contracts/tests/TestNewOrderRoot.tsol",
+        "line": 246
+      },
+      "508": {
+        "filename": "../contracts/tests/TestNewOrderRoot.tsol",
+        "line": 246
+      },
+      "516": {
+        "filename": "../contracts/tests/TestNewOrderRoot.tsol",
+        "line": 246
+      },
+      "532": {
+        "filename": "../contracts/tests/TestNewOrderRoot.tsol",
+        "line": 246
+      },
+      "548": {
+        "filename": "../contracts/tests/TestNewOrderRoot.tsol",
+        "line": 246
+      },
+      "564": {
+        "filename": "../contracts/tests/TestNewOrderRoot.tsol",
+        "line": 246
+      },
+      "580": {
+        "filename": "../contracts/tests/TestNewOrderRoot.tsol",
+        "line": 246
+      },
+      "596": {
+        "filename": "../contracts/tests/TestNewOrderRoot.tsol",
+        "line": 246
+      },
+      "604": {
+        "filename": "../contracts/tests/TestNewOrderRoot.tsol",
+        "line": 254
+      },
+      "612": {
+        "filename": "../contracts/tests/TestNewOrderRoot.tsol",
+        "line": 254
+      },
+      "628": {
+        "filename": "../contracts/tests/TestNewOrderRoot.tsol",
+        "line": 254
+      },
+      "636": {
+        "filename": "../contracts/tests/TestNewOrderRoot.tsol",
+        "line": 254
+      },
+      "644": {
+        "filename": "../contracts/tests/TestNewOrderRoot.tsol",
+        "line": 254
+      },
+      "652": {
+        "filename": "../contracts/tests/TestNewOrderRoot.tsol",
+        "line": 254
+      },
+      "668": {
+        "filename": "../contracts/tests/TestNewOrderRoot.tsol",
+        "line": 254
+      },
+      "684": {
+        "filename": "../contracts/tests/TestNewOrderRoot.tsol",
+        "line": 256
+      },
+      "692": {
+        "filename": "../contracts/tests/TestNewOrderRoot.tsol",
+        "line": 256
+      },
+      "708": {
+        "filename": "../contracts/tests/TestNewOrderRoot.tsol",
+        "line": 258
+      },
+      "724": {
+        "filename": "../contracts/tests/TestNewOrderRoot.tsol",
+        "line": 258
+      },
+      "732": {
+        "filename": "../contracts/tests/TestNewOrderRoot.tsol",
+        "line": 258
+      },
+      "756": {
+        "filename": "../contracts/tests/TestNewOrderRoot.tsol",
+        "line": 258
+      },
+      "764": {
+        "filename": "../contracts/tests/TestNewOrderRoot.tsol",
+        "line": 258
+      },
+      "780": {
+        "filename": "../contracts/tests/TestNewOrderRoot.tsol",
+        "line": 258
+      },
+      "796": {
+        "filename": "../contracts/tests/TestNewOrderRoot.tsol",
+        "line": 258
+      },
+      "804": {
+        "filename": "../contracts/tests/TestNewOrderRoot.tsol",
+        "line": 258
+      },
+      "820": {
+        "filename": "../contracts/tests/TestNewOrderRoot.tsol",
+        "line": 258
+      },
+      "836": {
+        "filename": "../contracts/tests/TestNewOrderRoot.tsol",
+        "line": 258
+      },
+      "852": {
+        "filename": "../contracts/tests/TestNewOrderRoot.tsol",
+        "line": 258
+      },
+      "868": {
+        "filename": "TestNewOrderRoot.code",
+        "line": 1673
+      },
+      "884": {
+        "filename": "TestNewOrderRoot.code",
+        "line": 1676
+      },
+      "900": {
+        "filename": "TestNewOrderRoot.code",
+        "line": 1677
+      }
+    },
     "20322f595c7900eca1092c54982d54abd750e05cf720a114b82da3641d7f991d": {
       "0": {
         "filename": "TestNewOrderRoot.code",
@@ -1654,284 +1932,6 @@
       "888": {
         "filename": "TestNewOrderRoot.code",
         "line": 854
-      }
-    },
-    "4084f2d7c16c63a925805a6f9816a9689474441e6ce89a151aa09f3b949829a5": {
-      "38": {
-        "filename": "../contracts/tests/TestNewOrderRoot.tsol",
-        "line": 241
-      },
-      "86": {
-        "filename": "../contracts/tests/TestNewOrderRoot.tsol",
-        "line": 241
-      },
-      "94": {
-        "filename": "../contracts/tests/TestNewOrderRoot.tsol",
-        "line": 241
-      },
-      "110": {
-        "filename": "../contracts/tests/TestNewOrderRoot.tsol",
-        "line": 246
-      },
-      "118": {
-        "filename": "../contracts/tests/TestNewOrderRoot.tsol",
-        "line": 246
-      },
-      "134": {
-        "filename": "../contracts/tests/TestNewOrderRoot.tsol",
-        "line": 246
-      },
-      "142": {
-        "filename": "../contracts/tests/TestNewOrderRoot.tsol",
-        "line": 246
-      },
-      "150": {
-        "filename": "../contracts/tests/TestNewOrderRoot.tsol",
-        "line": 246
-      },
-      "158": {
-        "filename": "../contracts/tests/TestNewOrderRoot.tsol",
-        "line": 246
-      },
-      "174": {
-        "filename": "../contracts/tests/TestNewOrderRoot.tsol",
-        "line": 246
-      },
-      "182": {
-        "filename": "../contracts/tests/TestNewOrderRoot.tsol",
-        "line": 246
-      },
-      "190": {
-        "filename": "../contracts/tests/TestNewOrderRoot.tsol",
-        "line": 246
-      },
-      "198": {
-        "filename": "../contracts/tests/TestNewOrderRoot.tsol",
-        "line": 246
-      },
-      "214": {
-        "filename": "../contracts/tests/TestNewOrderRoot.tsol",
-        "line": 246
-      },
-      "230": {
-        "filename": "../contracts/tests/TestNewOrderRoot.tsol",
-        "line": 246
-      },
-      "246": {
-        "filename": "../contracts/tests/TestNewOrderRoot.tsol",
-        "line": 246
-      },
-      "262": {
-        "filename": "../contracts/tests/TestNewOrderRoot.tsol",
-        "line": 246
-      },
-      "270": {
-        "filename": "../contracts/tests/TestNewOrderRoot.tsol",
-        "line": 246
-      },
-      "278": {
-        "filename": "../contracts/tests/TestNewOrderRoot.tsol",
-        "line": 246
-      },
-      "286": {
-        "filename": "../contracts/tests/TestNewOrderRoot.tsol",
-        "line": 246
-      },
-      "302": {
-        "filename": "../contracts/tests/TestNewOrderRoot.tsol",
-        "line": 246
-      },
-      "318": {
-        "filename": "../contracts/tests/TestNewOrderRoot.tsol",
-        "line": 246
-      },
-      "334": {
-        "filename": "../contracts/tests/TestNewOrderRoot.tsol",
-        "line": 246
-      },
-      "350": {
-        "filename": "../contracts/tests/TestNewOrderRoot.tsol",
-        "line": 246
-      },
-      "358": {
-        "filename": "../contracts/tests/TestNewOrderRoot.tsol",
-        "line": 246
-      },
-      "366": {
-        "filename": "../contracts/tests/TestNewOrderRoot.tsol",
-        "line": 246
-      },
-      "374": {
-        "filename": "../contracts/tests/TestNewOrderRoot.tsol",
-        "line": 246
-      },
-      "390": {
-        "filename": "../contracts/tests/TestNewOrderRoot.tsol",
-        "line": 246
-      },
-      "406": {
-        "filename": "../contracts/tests/TestNewOrderRoot.tsol",
-        "line": 246
-      },
-      "422": {
-        "filename": "../contracts/tests/TestNewOrderRoot.tsol",
-        "line": 246
-      },
-      "438": {
-        "filename": "../contracts/tests/TestNewOrderRoot.tsol",
-        "line": 246
-      },
-      "446": {
-        "filename": "../contracts/tests/TestNewOrderRoot.tsol",
-        "line": 246
-      },
-      "454": {
-        "filename": "../contracts/tests/TestNewOrderRoot.tsol",
-        "line": 246
-      },
-      "462": {
-        "filename": "../contracts/tests/TestNewOrderRoot.tsol",
-        "line": 246
-      },
-      "470": {
-        "filename": "../contracts/tests/TestNewOrderRoot.tsol",
-        "line": 246
-      },
-      "478": {
-        "filename": "../contracts/tests/TestNewOrderRoot.tsol",
-        "line": 246
-      },
-      "494": {
-        "filename": "../contracts/tests/TestNewOrderRoot.tsol",
-        "line": 246
-      },
-      "510": {
-        "filename": "../contracts/tests/TestNewOrderRoot.tsol",
-        "line": 246
-      },
-      "526": {
-        "filename": "../contracts/tests/TestNewOrderRoot.tsol",
-        "line": 246
-      },
-      "542": {
-        "filename": "../contracts/tests/TestNewOrderRoot.tsol",
-        "line": 246
-      },
-      "550": {
-        "filename": "../contracts/tests/TestNewOrderRoot.tsol",
-        "line": 246
-      },
-      "566": {
-        "filename": "../contracts/tests/TestNewOrderRoot.tsol",
-        "line": 246
-      },
-      "582": {
-        "filename": "../contracts/tests/TestNewOrderRoot.tsol",
-        "line": 246
-      },
-      "598": {
-        "filename": "../contracts/tests/TestNewOrderRoot.tsol",
-        "line": 246
-      },
-      "614": {
-        "filename": "../contracts/tests/TestNewOrderRoot.tsol",
-        "line": 246
-      },
-      "630": {
-        "filename": "../contracts/tests/TestNewOrderRoot.tsol",
-        "line": 246
-      },
-      "638": {
-        "filename": "../contracts/tests/TestNewOrderRoot.tsol",
-        "line": 254
-      },
-      "646": {
-        "filename": "../contracts/tests/TestNewOrderRoot.tsol",
-        "line": 254
-      },
-      "662": {
-        "filename": "../contracts/tests/TestNewOrderRoot.tsol",
-        "line": 254
-      },
-      "670": {
-        "filename": "../contracts/tests/TestNewOrderRoot.tsol",
-        "line": 254
-      },
-      "678": {
-        "filename": "../contracts/tests/TestNewOrderRoot.tsol",
-        "line": 254
-      },
-      "686": {
-        "filename": "../contracts/tests/TestNewOrderRoot.tsol",
-        "line": 254
-      },
-      "702": {
-        "filename": "../contracts/tests/TestNewOrderRoot.tsol",
-        "line": 254
-      },
-      "718": {
-        "filename": "../contracts/tests/TestNewOrderRoot.tsol",
-        "line": 256
-      },
-      "726": {
-        "filename": "../contracts/tests/TestNewOrderRoot.tsol",
-        "line": 256
-      },
-      "742": {
-        "filename": "../contracts/tests/TestNewOrderRoot.tsol",
-        "line": 258
-      },
-      "758": {
-        "filename": "../contracts/tests/TestNewOrderRoot.tsol",
-        "line": 258
-      },
-      "766": {
-        "filename": "../contracts/tests/TestNewOrderRoot.tsol",
-        "line": 258
-      },
-      "790": {
-        "filename": "../contracts/tests/TestNewOrderRoot.tsol",
-        "line": 258
-      },
-      "798": {
-        "filename": "../contracts/tests/TestNewOrderRoot.tsol",
-        "line": 258
-      },
-      "814": {
-        "filename": "../contracts/tests/TestNewOrderRoot.tsol",
-        "line": 258
-      },
-      "830": {
-        "filename": "../contracts/tests/TestNewOrderRoot.tsol",
-        "line": 258
-      },
-      "838": {
-        "filename": "../contracts/tests/TestNewOrderRoot.tsol",
-        "line": 258
-      },
-      "854": {
-        "filename": "../contracts/tests/TestNewOrderRoot.tsol",
-        "line": 258
-      },
-      "870": {
-        "filename": "../contracts/tests/TestNewOrderRoot.tsol",
-        "line": 258
-      },
-      "886": {
-        "filename": "../contracts/tests/TestNewOrderRoot.tsol",
-        "line": 258
-      },
-      "902": {
-        "filename": "TestNewOrderRoot.code",
-        "line": 1673
-      },
-      "918": {
-        "filename": "TestNewOrderRoot.code",
-        "line": 1676
-      },
-      "934": {
-        "filename": "TestNewOrderRoot.code",
-        "line": 1677
       }
     },
     "411cff23539d365cd28f3cc7ab17fadfda20a0b2acec4cf48a2b7de2516b42b1": {
@@ -3057,7 +3057,7 @@
     "61ab4641fa30d9310391025086eec65d200d79268e1b7cd402565e01ba64be3c": {
       "0": {
         "filename": "TestNewOrderRoot.code",
-        "line": 1796
+        "line": 1962
       }
     },
     "63682d17c96fa50de7dcffd037cd082139b3587bd2069b7fc4fe6fc3eec5c7c9": {
