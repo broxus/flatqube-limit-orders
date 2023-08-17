@@ -1,7 +1,13 @@
-import { lockliftChai, LockliftConfig } from "locklift";
-import { FactorySource } from "./build/factorySource";
-import * as dotenv from "dotenv";
-import chai from "chai";
+import { LockliftConfig, lockliftChai } from 'locklift';
+import { FactorySource } from './build/factorySource';
+import '@broxus/locklift-verifier';
+import { Deployments } from '@broxus/locklift-deploy';
+import * as dotenv from 'dotenv';
+
+dotenv.config();
+
+import chai from 'chai';
+chai.use(lockliftChai);
 
 dotenv.config();
 chai.use(lockliftChai);
@@ -11,42 +17,59 @@ declare global {
 }
 
 const LOCAL_NETWORK_ENDPOINT = process.env.NETWORK_ENDPOINT || "http://localhost/graphql";
-const DEV_NET_NETWORK_ENDPOINT = process.env.DEV_NET_NETWORK_ENDPOINT || "https://devnet-sandbox.evercloud.dev/graphql";
+
+const TESTNET_GQL_ENDPOINT = process.env.TESTNET_GQL_ENDPOINT || "https://devnet-sandbox.evercloud.dev/graphql";
+const TESTNET_GIVER_ADDRESS = process.env.TESTNET_GIVER_ADDRESS || "0:0000000000000000000000000000000000000000000000000000000000000000";
+const TESTNET_GIVER_SEED = process.env.TESTNET_GIVER_SEED || "secret key";
+const TESTNET_SEED_PHRASE = process.env.TESTNET_SEED_PHRASE || "action inject penalty envelope rabbit element slim tornado dinner pizza off blood";
 
 const VENOM_TESTNET_ENDPOINT = process.env.VENOM_TESTNET_ENDPOINT || "https://jrpc-devnet.venom.foundation/";
 const VENOM_TESTNET_TRACE_ENDPOINT =
   process.env.VENOM_TESTNET_TRACE_ENDPOINT || "https://gql-devnet.venom.network/graphql";
+const VENOM_TESTNET_GIVER_ADDRESS = process.env.VENOM_TESTNET_GIVER_ADDRESS || "0:0000000000000000000000000000000000000000000000000000000000000000";
+const VENOM_TESTNET_GIVER_SEED = process.env.VENOM_TESTNET_GIVER_SEED || "secret key";
+const VENOM_TESTNET_SEED_PHRASE = process.env.VENOM_TESTNET_SEED_PHRASE || "action inject penalty envelope rabbit element slim tornado dinner pizza off blood";
 
-// Create your own link on https://dashboard.evercloud.dev/
 const MAIN_NET_NETWORK_ENDPOINT = process.env.MAIN_NET_NETWORK_ENDPOINT || "https://mainnet.evercloud.dev/XXX/graphql";
+const MAIN_NET_GIVER_ADDRESS = process.env.MAIN_NET_GIVER_ADDRESS || "0:0000000000000000000000000000000000000000000000000000000000000000";
+const MAIN_NET_GIVER_SEED = process.env.MAIN_NET_GIVER_SEED || "secret key";
+const MAIN_NET_SEED_PHRASE = process.env.MAIN_NET_SEED_PHRASE || "action inject penalty envelope rabbit element slim tornado dinner pizza off blood";
 
 const config: LockliftConfig = {
   compiler: {
-    // Specify path to your TON-Solidity-Compiler
-    // path: "/mnt/o/projects/broxus/TON-Solidity-Compiler/build/solc/solc",
+    version: "0.64.0",
 
-    // Or specify version of compiler
-    version: "0.62.0",
-
-    // Specify config for extarnal contracts as in exapmple
-    // externalContracts: {
-    //   "node_modules/broxus-ton-tokens-contracts/build": ['TokenRoot', 'TokenWallet']
-    // }
+    externalContracts: {
+      precompiled: ['OrderRootPlatform, OrderPlatform'],
+      'node_modules/dex/build': [
+        'TokenFactory',
+        'DexTokenVault',
+        'DexVault',
+        'DexRoot',
+        'DexPlatform',
+        'DexPair',
+        'DexAccount',
+        'LpTokenPending'
+      ],
+      'node_modules/tip3/build': [
+        'TokenRootUpgradeable',
+        'TokenWalletUpgradeable',
+        'TokenWalletPlatform',
+      ],
+      'node_modules/ever-wever/everscale/build': [],
+    }
   },
-  linker: {
-    // Specify path to your stdlib
-    // lib: "/mnt/o/projects/broxus/TON-Solidity-Compiler/lib/stdlib_sol.tvm",
-    // // Specify path to your Linker
-    // path: "/mnt/o/projects/broxus/TVM-linker/target/release/tvm_linker",
-
-    // Or specify version of linker
-    version: "0.15.48",
+  linker: { version: "0.16.5" },
+  verifier: {
+    verifierVersion: 'latest', // contract verifier binary, see https://github.com/broxus/everscan-verify/releases
+    apiKey: process.env.EVERSCAN_API_KEY ?? '',
+    secretKey: process.env.EVERSCAN_SECRET_KEY ?? '',
+    // license: "AGPL-3.0-or-later", <- this is default value and can be overrided
   },
   networks: {
     local: {
-      // Specify connection settings for https://github.com/broxus/everscale-standalone-client/
       connection: {
-        id: 1,
+        id: 1337,
         group: "localnet",
         type: "graphql",
         data: {
@@ -55,44 +78,36 @@ const config: LockliftConfig = {
           local: true,
         },
       },
-      // This giver is default local-node giverV2
       giver: {
-        // Check if you need provide custom giver
         address: "0:ece57bcc6c530283becbbd8a3b24d3c5987cdddc3c8b7b33be6e4a6312490415",
         key: "172af540e43a524763dd53b26a066d472a97c4de37d5498170564510608250c3",
       },
-      tracing: {
-        endpoint: LOCAL_NETWORK_ENDPOINT,
-      },
+      tracing: { endpoint: LOCAL_NETWORK_ENDPOINT },
       keys: {
-        // Use everdev to generate your phrase
-        // !!! Never commit it in your repos !!!
-        // phrase: "action inject penalty envelope rabbit element slim tornado dinner pizza off blood",
+        phrase: "action inject penalty envelope rabbit element slim tornado dinner pizza off blood",
         amount: 20,
       },
     },
     test: {
       connection: {
-        id: 1,
+        id: 0,
         type: "graphql",
-        group: "dev",
+        group: "testnet",
         data: {
-          endpoints: [DEV_NET_NETWORK_ENDPOINT],
+          endpoints: [TESTNET_GQL_ENDPOINT],
           latencyDetectionInterval: 1000,
           local: false,
         },
       },
       giver: {
-        address: "0:0000000000000000000000000000000000000000000000000000000000000000",
-        key: "secret key",
+        address: TESTNET_GIVER_ADDRESS,
+        key: TESTNET_GIVER_SEED,
       },
       tracing: {
-        endpoint: DEV_NET_NETWORK_ENDPOINT,
+        endpoint: TESTNET_GQL_ENDPOINT,
       },
       keys: {
-        // Use everdev to generate your phrase
-        // !!! Never commit it in your repos !!!
-        // phrase: "action inject penalty envelope rabbit element slim tornado dinner pizza off blood",
+        phrase: TESTNET_SEED_PHRASE,
         amount: 20,
       },
     },
@@ -106,17 +121,15 @@ const config: LockliftConfig = {
         },
       },
       giver: {
-        address: "0:0000000000000000000000000000000000000000000000000000000000000000",
-        phrase: "phrase",
+        address: VENOM_TESTNET_GIVER_ADDRESS,
+        phrase: VENOM_TESTNET_GIVER_SEED,
         accountId: 0,
       },
       tracing: {
         endpoint: VENOM_TESTNET_TRACE_ENDPOINT,
       },
       keys: {
-        // Use everdev to generate your phrase
-        // !!! Never commit it in your repos !!!
-        // phrase: "action inject penalty envelope rabbit element slim tornado dinner pizza off blood",
+        phrase: VENOM_TESTNET_SEED_PHRASE,
         amount: 20,
       },
     },
@@ -134,16 +147,14 @@ const config: LockliftConfig = {
       },
       // This giver is default Wallet
       giver: {
-        address: "0:0000000000000000000000000000000000000000000000000000000000000000",
-        key: "secret key",
+        address: MAIN_NET_GIVER_ADDRESS,
+        key: MAIN_NET_GIVER_SEED,
       },
       tracing: {
         endpoint: MAIN_NET_NETWORK_ENDPOINT,
       },
       keys: {
-        // Use everdev to generate your phrase
-        // !!! Never commit it in your repos !!!
-        // phrase: "action inject penalty envelope rabbit element slim tornado dinner pizza off blood",
+        phrase: MAIN_NET_SEED_PHRASE,
         amount: 20,
       },
     },

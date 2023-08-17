@@ -3,20 +3,30 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "test": "npx locklift test --network local"
+    "build": "npx locklift build --config locklift.config.ts",
+    "test:order": "npx locklift test --disable-build -n local --tests test/1-order.spec.ts",
+    "build:test:order": "npx locklift test -n local --tests test/1-order.spec.ts",
+    "test:ms": "npx locklift test --disable-build -n local --tests test/2-ms-order.ts",
+    "build:test:ms": "npx locklift test -n local --tests test/2-ms-order.ts"
   },
   "author": "konstantin-ivanov <mrkgeniy@gmail.com>",
   "license": "ISC",
   "devDependencies": {
+    "@broxus/contracts": "^1.1.0",
     "@types/chai": "^4.3.5",
     "@types/mocha": "^10.0.1",
     "@types/node": "^20.5.0",
     "chai": "^4.3.7",
     "dotenv": "^16.0.3",
     "everscale-standalone-client": "^2.1.21",
+    "@broxus/locklift-verifier": "1.0.5",
+    "@broxus/locklift-deploy": "^1.0.3",
     "locklift": "^2.7.4",
     "prettier": "^3.0.1",
     "ts-mocha": "^10.0.0",
-    "typescript": "^4.7.4"
+    "typescript": "^4.7.4",
+    "tip3": "git://github.com/broxus/tip3#480c1b4481d1dddb028b408b20ba8c19abd1a4a4",
+    "ever-wever": "git://github.com/broxus/ever-wever",
+    "dex": "git://github.com/broxus/flatqube-contracts"
   }
 }
