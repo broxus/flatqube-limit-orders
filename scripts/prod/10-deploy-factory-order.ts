@@ -1,4 +1,5 @@
 import { toNano, getRandomNonce } from 'locklift';
+// @ts-ignore
 import prompts from 'prompts';
 import { Migration } from '../../utils/migration';
 
@@ -32,14 +33,14 @@ async function main() {
   const signer = await locklift.keystore.getSigner('0');
   const account = await migration.loadAccount('Account1', '0');
 
-  const PlatformRootOrder = await locklift.factory.getContractArtifacts(
+  const PlatformRootOrder = locklift.factory.getContractArtifacts(
     'OrderRootPlatform',
   );
-  const PlatformOrder = await locklift.factory.getContractArtifacts(
+  const PlatformOrder = locklift.factory.getContractArtifacts(
     'OrderPlatform',
   );
-  const RootOrder = await locklift.factory.getContractArtifacts('OrderRoot');
-  const Order = await locklift.factory.getContractArtifacts('Order');
+  const RootOrder = locklift.factory.getContractArtifacts('OrderRoot');
+  const Order = locklift.factory.getContractArtifacts('Order');
 
   const { contract: factoryOrder } = await locklift.factory.deployContract({
     contract: 'OrderFactory',
@@ -51,7 +52,7 @@ async function main() {
       randomNonce: getRandomNonce(),
       dexRoot: response.dexRoot,
     },
-    publicKey: signer.publicKey,
+    publicKey: signer!.publicKey,
     value: toNano(5),
   });
   console.log(`Order Factory address: ${factoryOrder.address}`);

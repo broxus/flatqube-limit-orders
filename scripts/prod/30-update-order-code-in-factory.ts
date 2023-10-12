@@ -4,11 +4,11 @@ const ORDER_FACTORY_ADDRESS =
   '0:3c8d39684cabbb780ff77710b02923c59ea2be84e211b09c3258eef344d394a4';
 
 async function main() {
-  const OrderFactory = await locklift.factory.getDeployedContract(
+  const OrderFactory = locklift.factory.getDeployedContract(
     'OrderFactory',
     new Address(ORDER_FACTORY_ADDRESS),
   );
-  const Order = await locklift.factory.getContractArtifacts('Order');
+  const Order = locklift.factory.getContractArtifacts('Order');
 
   const limitOrdersManager = await OrderFactory.methods
     .getManager({ answerId: 0 })

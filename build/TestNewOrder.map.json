@@ -6562,8 +6562,8 @@
     },
     "61ab4641fa30d9310391025086eec65d200d79268e1b7cd402565e01ba64be3c": {
       "0": {
-        "filename": "TestNewOrder.code",
-        "line": 5636
+        "filename": "../contracts/tests/TestNewOrder.tsol",
+        "line": 826
       }
     },
     "6260bd72860c81e55195d88365b80697e42aed5a321e69aa7943439095322778": {
@@ -16017,8 +16017,8 @@
     },
     "d558e53bf690afc8a76b8887a99a49a52db1bd24bec5da84780ea0e7bc0aad3f": {
       "0": {
-        "filename": "TestNewOrder.code",
-        "line": 5373
+        "filename": "../contracts/tests/TestNewOrder.tsol",
+        "line": 936
       }
     },
     "d6124e70d2c30c8df26766260714655e5afe5c1b619a214004a540f5267147ed": {

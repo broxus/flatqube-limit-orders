@@ -3,8 +3,14 @@ import {expect} from 'chai';
 import BigNumber from "bignumber.js";
 import {Account} from 'everscale-standalone-client/nodejs';
 
-import {Address, Contract, getRandomNonce, toNano, WalletTypes, zeroAddress} from 'locklift';
-import {FactorySource} from '../../build/factorySource';
+import {Address, Contract, getRandomNonce, toNano, zeroAddress} from 'locklift';
+import {
+    TokenRootUpgradeableAbi,
+    TokenFactoryAbi,
+    DexPairAbi,
+    DexAccountAbi
+} from "../build/factorySource";
+
 //@ts-ignore
 import {accountMigration, logMigrationSuccess, tokenRootMigration,} from '../utils';
 
@@ -18,7 +24,6 @@ import {
 } from "../utils/migration.new.utils";
 
 import {TokenWallet} from "../utils/wrappers/tokenWallet";
-
 import {OrderFactory} from "../utils/wrappers/order_factory";
 import {OrderRoot} from "../utils/wrappers/order_root";
 import {OrderWrapper} from "../utils/wrappers/order";
@@ -52,11 +57,11 @@ describe('OrderTest', () => {
     let RootOrderBar: OrderRoot;
     let RootOrderTst: OrderRoot;
 
-    let rootTokenBar: Contract<FactorySource['TokenRootUpgradeable']>;
-    let rootTokenReceive: Contract<FactorySource['TokenRootUpgradeable']>;
-    let FooBarLpRoot: Contract<FactorySource['TokenRootUpgradeable']>;
+    let rootTokenBar: Contract<TokenRootUpgradeableAbi>;
+    let rootTokenReceive: Contract<TokenRootUpgradeableAbi>;
+    let FooBarLpRoot: Contract<TokenRootUpgradeableAbi>;
 
-    let dexPair: Contract<FactorySource['DexPair']>;
+    let dexPair: Contract<DexPairAbi>;
 
     let account1: Account;
 
@@ -85,8 +90,8 @@ describe('OrderTest', () => {
     let account8: Account;
 
     let FactoryWalletTst: TokenWallet;
-    let tokenFactory: Contract<FactorySource['TokenFactory']>;
-    let dexAccount: Contract<FactorySource['DexAccount']>;
+    let tokenFactory: Contract<TokenFactoryAbi>;
+    let dexAccount: Contract<DexAccountAbi>;
 
     before('deploy and load new migrations', async () => {
         account1 = await accountMigration('10000', "Account1", "1");
@@ -100,7 +105,7 @@ describe('OrderTest', () => {
 
         tokenFactory = await tokenFactoryMigration(account1);
 
-        const [dexRoot, dexVault] = await dexRootMigration(account1, tokenFactory);
+        const [dexRoot, ] = await dexRootMigration(account1, tokenFactory);
 
         dexAccount = await dexAccountMigration(account1, dexRoot);
 
@@ -141,7 +146,7 @@ describe('OrderTest', () => {
         const lproot = await dexPair.methods.getTokenRoots({
             answerId: 1
         }).call()
-        FooBarLpRoot = await locklift.factory.getDeployedContract("TokenRootUpgradeable", lproot.lp)
+        FooBarLpRoot = locklift.factory.getDeployedContract("TokenRootUpgradeable", lproot.lp)
 
         logMigrationSuccess(
             'DexPair',
@@ -164,7 +169,7 @@ describe('OrderTest', () => {
                 numberString(2500, barDecimals), dexAccount.address, EMPTY_TVM_CELL, toNano(3)
         );
 
-        const TestFactory = await locklift.factory.getDeployedContract("OrderFactory", factoryOrder.address)
+        const TestFactory = locklift.factory.getDeployedContract("OrderFactory", factoryOrder.address)
         const addressRootBar = await orderRootMigration(account1, TestFactory, rootTokenBar)
         const addressRootTST = await orderRootMigration(account1, TestFactory, rootTokenReceive)
 
@@ -773,7 +778,7 @@ describe('OrderTest', () => {
 
             const payload = await RootOrderBar.buildPayloadRoot(
                 0, zeroAddress, rootTokenReceive.address, numberString(TOKENS_TO_EXCHANGE2, tstDecimals),
-                `0x${signer.publicKey}`, `0x${signer.publicKey}`
+                `0x${signer!.publicKey}`, `0x${signer!.publicKey}`
             )
 
             await locklift.tracing.trace(barWallet3.transfer(
@@ -831,7 +836,7 @@ describe('OrderTest', () => {
             const signer = await locklift.keystore.getSigner("3");
             const payload = await RootOrderBar.buildPayloadRoot(
                 0, zeroAddress, rootTokenReceive.address, numberString(TOKENS_TO_EXCHANGE2, tstDecimals),
-                `0x${signer.publicKey}`, 0)
+                `0x${signer!.publicKey}`, 0)
 
             await locklift.tracing.trace(barWallet3.transfer(
                 numberString(TOKENS_TO_EXCHANGE1, barDecimals), RootOrderBar.address, payload, toNano(6)
@@ -874,7 +879,7 @@ describe('OrderTest', () => {
 
             const payload = await RootOrderBar.buildPayloadRoot(
                 0, zeroAddress, rootTokenReceive.address, numberString(TOKENS_TO_EXCHANGE2, tstDecimals),
-                `0x${signer.publicKey}`, 0)
+                `0x${signer!.publicKey}`, 0)
 
             await locklift.tracing.trace(barWallet3.transfer(
                 numberString(TOKENS_TO_EXCHANGE1, barDecimals), RootOrderBar.address, payload, toNano(6)
@@ -1015,7 +1020,7 @@ describe('OrderTest', () => {
             console.log(``);
             const balanceBarAcc3Start = await accountTokenBalances(barWallet3, barDecimals);
             const balanceTstAcc3Start = await accountTokenBalances(tstWallet3, tstDecimals);
-            displayLog(balanceBarAcc3Start, balanceTstAcc3Start, true, "Account3");
+            await displayLog(balanceBarAcc3Start, balanceTstAcc3Start, true, "Account3");
 
             TOKENS_TO_EXCHANGE1 = 10;
             TOKENS_TO_EXCHANGE2 = 20;
@@ -1032,7 +1037,7 @@ describe('OrderTest', () => {
             const order = await RootOrderBar.getEventCreateOrder(account3);
             const signer1 = await locklift.keystore.getSigner("1");
             await factoryOrder.setEmergency(
-                true, order.address, `0x${signer1.publicKey}`
+                true, order.address, `0x${signer1!.publicKey}`
             )
 
             expect(6).to.equal(Number(await order.status()), 'Wrong status Limit order');
@@ -1052,16 +1057,16 @@ describe('OrderTest', () => {
                 true,
                 EMPTY_TVM_CELL,
                 true,
-                signer1
+                signer1!
                 )
 
             await factoryOrder.setEmergency(
-                false, order.address, `0x${signer1.publicKey}`
+                false, order.address, `0x${signer1!.publicKey}`
             )
 
             const balanceBarAcc3End = await accountTokenBalances(barWallet3, barDecimals);
             const balanceTstAcc3End = await accountTokenBalances(tstWallet3, tstDecimals);
-            displayLog(balanceBarAcc3End, balanceTstAcc3End, false, "Account3");
+            await displayLog(balanceBarAcc3End, balanceTstAcc3End, false, "Account3");
 
             expect(2).to.equal(Number(await order.status()), 'Wrong status Limit order');
             expect(balanceBarAcc3Start.token.toString()).to.equal(balanceBarAcc3End.token.toString(), 'Wrong Account3 Bar balance');
@@ -1071,12 +1076,13 @@ describe('OrderTest', () => {
             console.log(``);
             const balanceBarAcc3Start = await accountTokenBalances(barWallet3, barDecimals);
             const balanceTstAcc3Start = await accountTokenBalances(tstWallet3, tstDecimals);
-            displayLog(balanceBarAcc3Start, balanceTstAcc3Start, true, "Account3");
+            await displayLog(balanceBarAcc3Start, balanceTstAcc3Start, true, "Account3");
 
             TOKENS_TO_EXCHANGE1 = 10;
             TOKENS_TO_EXCHANGE2 = 20;
 
-            const BadOrderCode = (await locklift.factory.getContractArtifacts('TestNewOrderBad')).code
+            const BadOrderCode =
+              locklift.factory.getContractArtifacts('TestNewOrderBad').code;
 
             await factoryOrder.setOrderCode(BadOrderCode)
 
@@ -1091,7 +1097,13 @@ describe('OrderTest', () => {
             let order = await RootOrderBar.getEventCreateOrder(account3);
             let orders:Address[] = [order.address];
             await factoryOrder.updateOrder(orders)
-            order = new OrderWrapper((await locklift.factory.getDeployedContract("TestNewOrderBad", order.address)), account3);
+            order = new OrderWrapper(
+              locklift.factory.getDeployedContract(
+                'TestNewOrderBad',
+                order.address,
+              ),
+              account3,
+            );
 
             await order.cancel(15);
 
@@ -1099,7 +1111,7 @@ describe('OrderTest', () => {
             expect(balanceBarAcc3Proccess.token.toString()).to.equal(balanceBarAcc3Start.token.minus(TOKENS_TO_EXCHANGE1).toString(), 'Wrong Account3 Bar balance');
             const signer1 = await locklift.keystore.getSigner("1");
             await factoryOrder.setEmergency(
-                true, order.address, `0x${signer1.publicKey}`
+                true, order.address, `0x${signer1!.publicKey}`
             )
 
             expect(6).to.equal(Number(await order.status()), 'Wrong status Limit order');
@@ -1118,7 +1130,7 @@ describe('OrderTest', () => {
                 true,
                 EMPTY_TVM_CELL,
                 true,
-                signer1
+                signer1!
             )
 
             const GasAccount3 = new BigNumber(await locklift.provider.getBalance(account3.address)).shiftedBy(-9)
@@ -1127,7 +1139,7 @@ describe('OrderTest', () => {
 
             await order.sendGas(account3.address, toNano(GasOrder.minus(1).toString()), 66, signer1)
             await factoryOrder.setEmergency(
-                false, order.address, `0x${signer1.publicKey}`
+                false, order.address, `0x${signer1!.publicKey}`
             )
 
             const GasAccount3End = new BigNumber(await locklift.provider.getBalance(account3.address)).shiftedBy(-9)
@@ -1136,7 +1148,7 @@ describe('OrderTest', () => {
 
             const balanceBarAcc3End = await accountTokenBalances(barWallet3, barDecimals);
             const balanceTstAcc3End = await accountTokenBalances(tstWallet3, tstDecimals);
-            displayLog(balanceBarAcc3End, balanceTstAcc3End, false, "Account3");
+            await displayLog(balanceBarAcc3End, balanceTstAcc3End, false, "Account3");
 
             expect(5).to.equal(Number(await order.status()), 'Wrong status Limit order');
             expect(GasAccount3End.minus(GasAccount3).plus(0.3).isGreaterThanOrEqualTo(GasOrder.minus(1))).to.equal(true, 'Wrong gas Balance');
@@ -1169,14 +1181,13 @@ describe('OrderTest', () => {
                 from: account1.address, amount: toNano(0.2)
             })
 
-            const mainCode = (await locklift.factory.getContractArtifacts("OrderRoot")).code
-            const testFactoryCode = (await locklift.factory.getContractArtifacts("TestNewOrderRoot")).code
+            const mainCode =
+              locklift.factory.getContractArtifacts('OrderRoot').code;
+            const testFactoryCode =
+              locklift.factory.getContractArtifacts('TestNewOrderRoot').code;
             await factoryOrder.setOrderRootCode(testFactoryCode)
             let roots:Address[] = [RootOrderBar.address];
             await factoryOrder.upgradeOrderRoot(roots)
-
-            const newRoot = await locklift.factory.getDeployedContract("TestNewOrderRoot", RootOrderBar.address)
-            // Проверяем
 
             await locklift.tracing.trace(barWallet3.transfer(
                 numberString(50, barDecimals), RootOrderBar.address, '', toNano(6)
@@ -1760,179 +1771,435 @@ describe('OrderTest', () => {
             expect(expectedLO1Tst).to.equal(new BigNumber(balanceLimitOrder1).shiftedBy(-tstDecimals).toString(), 'Wrong Limit Order 1 Tst wallet balance');
         });
         it('Matching on full filled order from backend 1', async () => {
-            console.log(`#############################\n`);
-            const factoryAddress = (await rootTokenReceive.methods.walletOf({walletOwner: factoryOrder.address, answerId: 0}).call()).value0;
-            const factoryWalletTst = await TokenWallet.from_addr(factoryAddress, factoryOrder.address, "factoryWalletTst");
-            const balanceFactoryTstStart = await accountTokenBalances(factoryWalletTst, tstDecimals);
-            await displayLog(0, balanceFactoryTstStart, true, "Factory");
+          console.log(`#############################\n`);
+          const factoryAddress = (
+            await rootTokenReceive.methods
+              .walletOf({ walletOwner: factoryOrder.address, answerId: 0 })
+              .call()
+          ).value0;
+          const factoryWalletTst = await TokenWallet.from_addr(
+            factoryAddress,
+            factoryOrder.address,
+            'factoryWalletTst',
+          );
+          const balanceFactoryTstStart = await accountTokenBalances(
+            factoryWalletTst,
+            tstDecimals,
+          );
+          await displayLog(0, balanceFactoryTstStart, true, 'Factory');
 
-            const balanceBarAcc3Start = await accountTokenBalances(barWallet3, barDecimals);
-            const balanceTstAcc3Start = await accountTokenBalances(tstWallet3, tstDecimals);
-            await displayLog(balanceBarAcc3Start, balanceTstAcc3Start, true, "Account3");
+          const balanceBarAcc3Start = await accountTokenBalances(
+            barWallet3,
+            barDecimals,
+          );
+          const balanceTstAcc3Start = await accountTokenBalances(
+            tstWallet3,
+            tstDecimals,
+          );
+          await displayLog(
+            balanceBarAcc3Start,
+            balanceTstAcc3Start,
+            true,
+            'Account3',
+          );
 
-            const balanceBarAcc4Start = await accountTokenBalances(barWallet4, barDecimals);
-            const balanceTstAcc4Start = await accountTokenBalances(tstWallet4, tstDecimals);
-            await displayLog(balanceBarAcc4Start, balanceTstAcc4Start, true, "Account4");
+          const balanceBarAcc4Start = await accountTokenBalances(
+            barWallet4,
+            barDecimals,
+          );
+          const balanceTstAcc4Start = await accountTokenBalances(
+            tstWallet4,
+            tstDecimals,
+          );
+          await displayLog(
+            balanceBarAcc4Start,
+            balanceTstAcc4Start,
+            true,
+            'Account4',
+          );
 
-            TOKENS_TO_EXCHANGE_SPENT1 = 30;
-            TOKENS_TO_EXCHANGE_RECEIVE1 = 10;
+          TOKENS_TO_EXCHANGE_SPENT1 = 30;
+          TOKENS_TO_EXCHANGE_RECEIVE1 = 10;
 
-            TOKENS_TO_EXCHANGE_SPENT2 = 10;
-            TOKENS_TO_EXCHANGE_RECEIVE2 = 20;
+          TOKENS_TO_EXCHANGE_SPENT2 = 10;
+          TOKENS_TO_EXCHANGE_RECEIVE2 = 20;
 
-            const signer = await locklift.keystore.getSigner("3");
+          const signer = await locklift.keystore.getSigner('3');
 
-            //Create Order 1
-            const payload1 = await RootOrderBar.buildPayloadRoot(
-                0, zeroAddress, rootTokenBar.address, numberString(TOKENS_TO_EXCHANGE_RECEIVE1, barDecimals),
-                0, `0x${signer.publicKey}`
-                )
+          //Create Order 1
+          const payload1 = await RootOrderBar.buildPayloadRoot(
+            0,
+            zeroAddress,
+            rootTokenBar.address,
+            numberString(TOKENS_TO_EXCHANGE_RECEIVE1, barDecimals),
+            0,
+            `0x${signer!.publicKey}`,
+          );
 
-            await locklift.tracing.trace(tstWallet3.transfer(
-                numberString(TOKENS_TO_EXCHANGE_SPENT1, tstDecimals), RootOrderTst.address, payload1, toNano(6)
-            ), {allowedCodes: {compute: [null]}});
+          await locklift.tracing.trace(
+            tstWallet3.transfer(
+              numberString(TOKENS_TO_EXCHANGE_SPENT1, tstDecimals),
+              RootOrderTst.address,
+              payload1,
+              toNano(6),
+            ),
+            { allowedCodes: { compute: [null] } },
+          );
 
-            const order1 = await RootOrderTst.getEventCreateOrder(account3);
-            console.log(`Limit order 1: ${order1.address}`);
-            console.log(``);
+          const order1 = await RootOrderTst.getEventCreateOrder(account3);
+          console.log(`Limit order 1: ${order1.address}`);
+          console.log(``);
 
-            // Create Order 2
-            const payload2 = await RootOrderBar.buildPayloadRoot(
-                0, zeroAddress, rootTokenReceive.address, numberString(TOKENS_TO_EXCHANGE_RECEIVE2, tstDecimals),
-                0, `0x${signer.publicKey}`
-            )
+          // Create Order 2
+          const payload2 = await RootOrderBar.buildPayloadRoot(
+            0,
+            zeroAddress,
+            rootTokenReceive.address,
+            numberString(TOKENS_TO_EXCHANGE_RECEIVE2, tstDecimals),
+            0,
+            `0x${signer!.publicKey}`,
+          );
 
-            await locklift.tracing.trace(barWallet4.transfer(
-                numberString(TOKENS_TO_EXCHANGE_SPENT2, barDecimals), RootOrderBar.address, payload2, toNano(6)
-            ),{allowedCodes: {compute: [null]}});
+          await locklift.tracing.trace(
+            barWallet4.transfer(
+              numberString(TOKENS_TO_EXCHANGE_SPENT2, barDecimals),
+              RootOrderBar.address,
+              payload2,
+              toNano(6),
+            ),
+            { allowedCodes: { compute: [null] } },
+          );
 
-            const order2 = await RootOrderBar.getEventCreateOrder(account4);
-            console.log(`Limit order 2: ${order2.address}`);
-            console.log(``);
+          const order2 = await RootOrderBar.getEventCreateOrder(account4);
+          console.log(`Limit order 2: ${order2.address}`);
+          console.log(``);
 
-            // Call matching
-            await order1.backendMatching(1, order2.address, true, true, signer)
+          // Call matching
+          await order1.backendMatching(1, order2.address, true, true, signer);
 
-            const balanceBarAcc3End = await accountTokenBalances(barWallet3, barDecimals);
-            const balanceTstAcc3End = await accountTokenBalances(tstWallet3, tstDecimals);
-            await displayLog(balanceBarAcc3End, balanceTstAcc3End, false, "Account3");
+          const balanceBarAcc3End = await accountTokenBalances(
+            barWallet3,
+            barDecimals,
+          );
+          const balanceTstAcc3End = await accountTokenBalances(
+            tstWallet3,
+            tstDecimals,
+          );
+          await displayLog(
+            balanceBarAcc3End,
+            balanceTstAcc3End,
+            false,
+            'Account3',
+          );
 
-            const balanceBarAcc4End = await accountTokenBalances(barWallet4, barDecimals);
-            const balanceTstAcc4End = await accountTokenBalances(tstWallet4, tstDecimals);
-            await displayLog(balanceBarAcc4End, balanceTstAcc4End, false, "Account4");
+          const balanceBarAcc4End = await accountTokenBalances(
+            barWallet4,
+            barDecimals,
+          );
+          const balanceTstAcc4End = await accountTokenBalances(
+            tstWallet4,
+            tstDecimals,
+          );
+          await displayLog(
+            balanceBarAcc4End,
+            balanceTstAcc4End,
+            false,
+            'Account4',
+          );
 
-            const balanceFactoryTstEnd = await accountTokenBalances(factoryWalletTst, tstDecimals);
-            await displayLog(0, balanceFactoryTstEnd, false, "Factory");
+          const balanceFactoryTstEnd = await accountTokenBalances(
+            factoryWalletTst,
+            tstDecimals,
+          );
+          await displayLog(0, balanceFactoryTstEnd, false, 'Factory');
 
-            const feeParams = await RootOrderTst.feeParams()
-            const rewardAmount = TOKENS_TO_EXCHANGE_SPENT1 - ((TOKENS_TO_EXCHANGE_RECEIVE1*TOKENS_TO_EXCHANGE_RECEIVE2)/TOKENS_TO_EXCHANGE_SPENT2);
-            const comissionAmount = rewardAmount * (Number(feeParams.params.matchingNumerator) / Number(feeParams.params.matchingDenominator));
+          const rewardAmount =
+            TOKENS_TO_EXCHANGE_SPENT1 -
+            (TOKENS_TO_EXCHANGE_RECEIVE1 * TOKENS_TO_EXCHANGE_RECEIVE2) /
+              TOKENS_TO_EXCHANGE_SPENT2;
 
-            const expectedFactoryTstWallet = new BigNumber(balanceFactoryTstStart.token || 0).plus(new BigNumber(rewardAmount)).toString();
+          const expectedFactoryTstWallet = new BigNumber(
+            balanceFactoryTstStart.token || 0,
+          )
+            .plus(new BigNumber(rewardAmount))
+            .toString();
 
-            const expectedAccount3Bar = new BigNumber(balanceBarAcc3Start.token || 0).plus(new BigNumber(TOKENS_TO_EXCHANGE_RECEIVE1)).toString();
-            const expectedAccount3Tst = new BigNumber(balanceTstAcc3Start.token || 0).minus(new BigNumber(TOKENS_TO_EXCHANGE_SPENT1)).toString();
+          const expectedAccount3Bar = new BigNumber(
+            balanceBarAcc3Start.token || 0,
+          )
+            .plus(new BigNumber(TOKENS_TO_EXCHANGE_RECEIVE1))
+            .toString();
+          const expectedAccount3Tst = new BigNumber(
+            balanceTstAcc3Start.token || 0,
+          )
+            .minus(new BigNumber(TOKENS_TO_EXCHANGE_SPENT1))
+            .toString();
 
-            const expectedAccount4Bar = new BigNumber(balanceBarAcc4Start.token || 0).minus(new BigNumber(TOKENS_TO_EXCHANGE_SPENT2)).toString();
-            const expectedAccount4Tst = new BigNumber(balanceTstAcc4Start.token || 0).plus(new BigNumber(TOKENS_TO_EXCHANGE_RECEIVE2)).toString();
+          const expectedAccount4Bar = new BigNumber(
+            balanceBarAcc4Start.token || 0,
+          )
+            .minus(new BigNumber(TOKENS_TO_EXCHANGE_SPENT2))
+            .toString();
+          const expectedAccount4Tst = new BigNumber(
+            balanceTstAcc4Start.token || 0,
+          )
+            .plus(new BigNumber(TOKENS_TO_EXCHANGE_RECEIVE2))
+            .toString();
 
-            expect(3).to.eq(Number(await order1.status()), 'Wrong status Limit Order 1');
-            expect(3).to.eq(Number(await order2.status()), 'Wrong status Limit Order 2');
-            expect(0).to.equal(Number(await(locklift.provider.getBalance(order1.address))), "Wrong Order Ever balance 1");
-            expect(0).to.equal(Number(await(locklift.provider.getBalance(order2.address))), "Wrong Order Ever balance 2");
-            expect(expectedFactoryTstWallet).to.equal(balanceFactoryTstEnd.token.toString(), 'Wrong Factory Tst balance');
-            expect(expectedAccount3Bar).to.equal(balanceBarAcc3End.token.toString(), 'Wrong Account3 Bar balance');
-            expect(expectedAccount3Tst).to.equal(balanceTstAcc3End.token.toString(), 'Wrong Account3 Tst balance');
-            expect(expectedAccount4Bar).to.equal(balanceBarAcc4End.token.toString(), 'Wrong Account4 Bar balance');
-            expect(expectedAccount4Tst).to.equal(balanceTstAcc4End.token.toString(), 'Wrong Account4 Tst balance');
+          expect(3).to.eq(
+            Number(await order1.status()),
+            'Wrong status Limit Order 1',
+          );
+          expect(3).to.eq(
+            Number(await order2.status()),
+            'Wrong status Limit Order 2',
+          );
+          expect(0).to.equal(
+            Number(await(locklift.provider.getBalance(order1.address))),
+            'Wrong Order Ever balance 1',
+          );
+          expect(0).to.equal(
+            Number(await(locklift.provider.getBalance(order2.address))),
+            'Wrong Order Ever balance 2',
+          );
+          expect(expectedFactoryTstWallet).to.equal(
+            balanceFactoryTstEnd.token.toString(),
+            'Wrong Factory Tst balance',
+          );
+          expect(expectedAccount3Bar).to.equal(
+            balanceBarAcc3End.token.toString(),
+            'Wrong Account3 Bar balance',
+          );
+          expect(expectedAccount3Tst).to.equal(
+            balanceTstAcc3End.token.toString(),
+            'Wrong Account3 Tst balance',
+          );
+          expect(expectedAccount4Bar).to.equal(
+            balanceBarAcc4End.token.toString(),
+            'Wrong Account4 Bar balance',
+          );
+          expect(expectedAccount4Tst).to.equal(
+            balanceTstAcc4End.token.toString(),
+            'Wrong Account4 Tst balance',
+          );
         });
         it('Matching on different filled: order 1 - full and 2 - part order from backend 2', async () => {
-            console.log(`#############################\n`);
-            const factoryAddress = (await rootTokenReceive.methods.walletOf({walletOwner: factoryOrder.address, answerId: 0}).call()).value0;
-            const factoryWalletTst = await TokenWallet.from_addr(factoryAddress, factoryOrder.address, "factoryWalletTst");
-            const balanceFactoryTstStart = await accountTokenBalances(factoryWalletTst, tstDecimals);
-            await displayLog(0, balanceFactoryTstStart, true, "Factory");
+          console.log(`#############################\n`);
+          const factoryAddress = (
+            await rootTokenReceive.methods
+              .walletOf({ walletOwner: factoryOrder.address, answerId: 0 })
+              .call()
+          ).value0;
+          const factoryWalletTst = await TokenWallet.from_addr(
+            factoryAddress,
+            factoryOrder.address,
+            'factoryWalletTst',
+          );
+          const balanceFactoryTstStart = await accountTokenBalances(
+            factoryWalletTst,
+            tstDecimals,
+          );
+          await displayLog(0, balanceFactoryTstStart, true, 'Factory');
 
-            const balanceBarAcc3Start = await accountTokenBalances(barWallet3, barDecimals);
-            const balanceTstAcc3Start = await accountTokenBalances(tstWallet3, tstDecimals);
-            await displayLog(balanceBarAcc3Start, balanceTstAcc3Start, true, "Account3");
+          const balanceBarAcc3Start = await accountTokenBalances(
+            barWallet3,
+            barDecimals,
+          );
+          const balanceTstAcc3Start = await accountTokenBalances(
+            tstWallet3,
+            tstDecimals,
+          );
+          await displayLog(
+            balanceBarAcc3Start,
+            balanceTstAcc3Start,
+            true,
+            'Account3',
+          );
 
-            const balanceBarAcc4Start = await accountTokenBalances(barWallet4, barDecimals);
-            const balanceTstAcc4Start = await accountTokenBalances(tstWallet4, tstDecimals);
-            await displayLog(balanceBarAcc4Start, balanceTstAcc4Start, true, "Account4");
+          const balanceBarAcc4Start = await accountTokenBalances(
+            barWallet4,
+            barDecimals,
+          );
+          const balanceTstAcc4Start = await accountTokenBalances(
+            tstWallet4,
+            tstDecimals,
+          );
+          await displayLog(
+            balanceBarAcc4Start,
+            balanceTstAcc4Start,
+            true,
+            'Account4',
+          );
 
-            TOKENS_TO_EXCHANGE_SPENT1 = 10;
-            TOKENS_TO_EXCHANGE_RECEIVE1 = 1;
+          TOKENS_TO_EXCHANGE_SPENT1 = 10;
+          TOKENS_TO_EXCHANGE_RECEIVE1 = 1;
 
-            TOKENS_TO_EXCHANGE_SPENT2 = 2;
-            TOKENS_TO_EXCHANGE_RECEIVE2 = 10;
+          TOKENS_TO_EXCHANGE_SPENT2 = 2;
+          TOKENS_TO_EXCHANGE_RECEIVE2 = 10;
 
-            const signer = await locklift.keystore.getSigner("3");
+          const signer = await locklift.keystore.getSigner('3');
 
-            //Create Order 1
-            const payload1 = await RootOrderBar.buildPayloadRoot(
-                0, zeroAddress, rootTokenBar.address, numberString(TOKENS_TO_EXCHANGE_RECEIVE1, barDecimals),
-                0, `0x${signer.publicKey}`
-                )
+          //Create Order 1
+          const payload1 = await RootOrderBar.buildPayloadRoot(
+            0,
+            zeroAddress,
+            rootTokenBar.address,
+            numberString(TOKENS_TO_EXCHANGE_RECEIVE1, barDecimals),
+            0,
+            `0x${signer!.publicKey}`,
+          );
 
-            await locklift.tracing.trace(tstWallet3.transfer(
-                numberString(TOKENS_TO_EXCHANGE_SPENT1, tstDecimals), RootOrderTst.address, payload1, toNano(6)
-            ), {allowedCodes: {compute: [null]}});
+          await locklift.tracing.trace(
+            tstWallet3.transfer(
+              numberString(TOKENS_TO_EXCHANGE_SPENT1, tstDecimals),
+              RootOrderTst.address,
+              payload1,
+              toNano(6),
+            ),
+            { allowedCodes: { compute: [null] } },
+          );
 
-            const order1 = await RootOrderTst.getEventCreateOrder(account3);
-            console.log(`Limit order 1: ${order1.address}`);
-            console.log(``);
+          const order1 = await RootOrderTst.getEventCreateOrder(account3);
+          console.log(`Limit order 1: ${order1.address}`);
+          console.log(``);
 
-            // Create Order 2
-            const payload2 = await RootOrderBar.buildPayloadRoot(
-                0, zeroAddress, rootTokenReceive.address, numberString(TOKENS_TO_EXCHANGE_RECEIVE2, tstDecimals),
-                0, `0x${signer.publicKey}`
-            )
+          // Create Order 2
+          const payload2 = await RootOrderBar.buildPayloadRoot(
+            0,
+            zeroAddress,
+            rootTokenReceive.address,
+            numberString(TOKENS_TO_EXCHANGE_RECEIVE2, tstDecimals),
+            0,
+            `0x${signer!.publicKey}`,
+          );
 
-            await locklift.tracing.trace(barWallet4.transfer(
-                numberString(TOKENS_TO_EXCHANGE_SPENT2, barDecimals), RootOrderBar.address, payload2, toNano(6)
-            ),{allowedCodes: {compute: [null]}});
+          await locklift.tracing.trace(
+            barWallet4.transfer(
+              numberString(TOKENS_TO_EXCHANGE_SPENT2, barDecimals),
+              RootOrderBar.address,
+              payload2,
+              toNano(6),
+            ),
+            { allowedCodes: { compute: [null] } },
+          );
 
-            const order2 = await RootOrderBar.getEventCreateOrder(account4);
-            console.log(`Limit order 2: ${order2.address}`);
-            console.log(``);
+          const order2 = await RootOrderBar.getEventCreateOrder(account4);
+          console.log(`Limit order 2: ${order2.address}`);
+          console.log(``);
 
-            // Call matching
-            await order1.backendMatching(1, order2.address, true, true, signer)
+          // Call matching
+          await order1.backendMatching(1, order2.address, true, true, signer);
 
-            const balanceBarAcc3End = await accountTokenBalances(barWallet3, barDecimals);
-            const balanceTstAcc3End = await accountTokenBalances(tstWallet3, tstDecimals);
-            await displayLog(balanceBarAcc3End, balanceTstAcc3End, false, "Account3");
+          const balanceBarAcc3End = await accountTokenBalances(
+            barWallet3,
+            barDecimals,
+          );
+          const balanceTstAcc3End = await accountTokenBalances(
+            tstWallet3,
+            tstDecimals,
+          );
+          await displayLog(
+            balanceBarAcc3End,
+            balanceTstAcc3End,
+            false,
+            'Account3',
+          );
 
-            const balanceBarAcc4End = await accountTokenBalances(barWallet4, barDecimals);
-            const balanceTstAcc4End = await accountTokenBalances(tstWallet4, tstDecimals);
-            await displayLog(balanceBarAcc4End, balanceTstAcc4End, false, "Account4");
+          const balanceBarAcc4End = await accountTokenBalances(
+            barWallet4,
+            barDecimals,
+          );
+          const balanceTstAcc4End = await accountTokenBalances(
+            tstWallet4,
+            tstDecimals,
+          );
+          await displayLog(
+            balanceBarAcc4End,
+            balanceTstAcc4End,
+            false,
+            'Account4',
+          );
 
-            const balanceFactoryTstEnd = await accountTokenBalances(factoryWalletTst, tstDecimals);
-            await displayLog(0, balanceFactoryTstEnd, false, "Factory");
+          const balanceFactoryTstEnd = await accountTokenBalances(
+            factoryWalletTst,
+            tstDecimals,
+          );
+          await displayLog(0, balanceFactoryTstEnd, false, 'Factory');
 
-            const feeParams = await RootOrderTst.feeParams()
-            const rewardAmount = TOKENS_TO_EXCHANGE_SPENT1 - ((TOKENS_TO_EXCHANGE_RECEIVE1*TOKENS_TO_EXCHANGE_RECEIVE2)/TOKENS_TO_EXCHANGE_SPENT2);
-            const comissionAmount = rewardAmount * (Number(feeParams.params.matchingNumerator) / Number(feeParams.params.matchingDenominator));
+          const rewardAmount =
+            TOKENS_TO_EXCHANGE_SPENT1 -
+            (TOKENS_TO_EXCHANGE_RECEIVE1 * TOKENS_TO_EXCHANGE_RECEIVE2) /
+              TOKENS_TO_EXCHANGE_SPENT2;
 
-            const expectedFactoryTstWallet = new BigNumber(balanceFactoryTstStart.token || 0).plus(new BigNumber(rewardAmount)).toString();
+          const expectedFactoryTstWallet = new BigNumber(
+            balanceFactoryTstStart.token || 0,
+          )
+            .plus(new BigNumber(rewardAmount))
+            .toString();
 
-            const expectedAccount3Bar = new BigNumber(balanceBarAcc3Start.token || 0).plus(new BigNumber(TOKENS_TO_EXCHANGE_RECEIVE1)).toString();
-            const expectedAccount3Tst = new BigNumber(balanceTstAcc3Start.token || 0).minus(new BigNumber(TOKENS_TO_EXCHANGE_SPENT1)).toString();
+          const expectedAccount3Bar = new BigNumber(
+            balanceBarAcc3Start.token || 0,
+          )
+            .plus(new BigNumber(TOKENS_TO_EXCHANGE_RECEIVE1))
+            .toString();
+          const expectedAccount3Tst = new BigNumber(
+            balanceTstAcc3Start.token || 0,
+          )
+            .minus(new BigNumber(TOKENS_TO_EXCHANGE_SPENT1))
+            .toString();
 
-            const expectedRecive = Number((TOKENS_TO_EXCHANGE_RECEIVE1/TOKENS_TO_EXCHANGE_SPENT2*TOKENS_TO_EXCHANGE_RECEIVE2).toFixed(9));
-            const expectedAccount4Bar = new BigNumber(balanceBarAcc4Start.token || 0).minus(new BigNumber(TOKENS_TO_EXCHANGE_SPENT2)).toString();
-            const expectedAccount4Tst = new BigNumber(balanceTstAcc4Start.token || 0).plus(new BigNumber(expectedRecive)).toString();
+          const expectedRecive = Number(
+            (
+              (TOKENS_TO_EXCHANGE_RECEIVE1 / TOKENS_TO_EXCHANGE_SPENT2) *
+              TOKENS_TO_EXCHANGE_RECEIVE2
+            ).toFixed(9),
+          );
+          const expectedAccount4Bar = new BigNumber(
+            balanceBarAcc4Start.token || 0,
+          )
+            .minus(new BigNumber(TOKENS_TO_EXCHANGE_SPENT2))
+            .toString();
+          const expectedAccount4Tst = new BigNumber(
+            balanceTstAcc4Start.token || 0,
+          )
+            .plus(new BigNumber(expectedRecive))
+            .toString();
 
-            expect(3).to.eq(Number(await order1.status()), 'Wrong status Limit Order 1');
-            expect(2).to.eq(Number(await order2.status()), 'Wrong status Limit Order 2');
-            expect(0).to.equal(Number(await(locklift.provider.getBalance(order1.address))), "Wrong Order Ever balance 1");
-            expect(Number(await(locklift.provider.getBalance(order2.address)))).to.above(0, "Wrong Order Ever balance 2");
-            expect(expectedFactoryTstWallet).to.equal(balanceFactoryTstEnd.token.toString(), 'Wrong Factory Tst balance');
-            expect(expectedAccount3Bar).to.equal(balanceBarAcc3End.token.toString(), 'Wrong Account3 Bar balance');
-            expect(expectedAccount3Tst).to.equal(balanceTstAcc3End.token.toString(), 'Wrong Account3 Tst balance');
-            expect(expectedAccount4Bar).to.equal(balanceBarAcc4End.token.toString(), 'Wrong Account4 Bar balance');
-            expect(expectedAccount4Tst).to.equal(balanceTstAcc4End.token.toString(), 'Wrong Account4 Tst balance');
+          expect(3).to.eq(
+            Number(await order1.status()),
+            'Wrong status Limit Order 1',
+          );
+          expect(2).to.eq(
+            Number(await order2.status()),
+            'Wrong status Limit Order 2',
+          );
+          expect(0).to.equal(
+            Number(await(locklift.provider.getBalance(order1.address))),
+            'Wrong Order Ever balance 1',
+          );
+          expect(
+            Number(await(locklift.provider.getBalance(order2.address))),
+          ).to.above(0, 'Wrong Order Ever balance 2');
+          expect(expectedFactoryTstWallet).to.equal(
+            balanceFactoryTstEnd.token.toString(),
+            'Wrong Factory Tst balance',
+          );
+          expect(expectedAccount3Bar).to.equal(
+            balanceBarAcc3End.token.toString(),
+            'Wrong Account3 Bar balance',
+          );
+          expect(expectedAccount3Tst).to.equal(
+            balanceTstAcc3End.token.toString(),
+            'Wrong Account3 Tst balance',
+          );
+          expect(expectedAccount4Bar).to.equal(
+            balanceBarAcc4End.token.toString(),
+            'Wrong Account4 Bar balance',
+          );
+          expect(expectedAccount4Tst).to.equal(
+            balanceTstAcc4End.token.toString(),
+            'Wrong Account4 Tst balance',
+          );
         });
         it('Matching on different filled: order 1 - full and 2 - full order from backend 3', async () => {
             console.log(`#############################\n`);
@@ -1960,7 +2227,7 @@ describe('OrderTest', () => {
             //Create Order 1
             const payload1 = await RootOrderBar.buildPayloadRoot(
                 0, zeroAddress, rootTokenBar.address, numberString(TOKENS_TO_EXCHANGE_RECEIVE1, barDecimals),
-                0, `0x${signer.publicKey}`
+                0, `0x${signer!.publicKey}`
                 )
 
             await locklift.tracing.trace(tstWallet3.transfer(
@@ -1974,7 +2241,7 @@ describe('OrderTest', () => {
             // Create Order 2
             const payload2 = await RootOrderBar.buildPayloadRoot(
                 0, zeroAddress, rootTokenReceive.address, numberString(TOKENS_TO_EXCHANGE_RECEIVE2, tstDecimals),
-                0, `0x${signer.publicKey}`
+                0, `0x${signer!.publicKey}`
             )
 
             await locklift.tracing.trace(barWallet4.transfer(
@@ -1999,10 +2266,7 @@ describe('OrderTest', () => {
             const balanceFactoryTstEnd = await accountTokenBalances(factoryWalletTst, tstDecimals);
             await displayLog(0, balanceFactoryTstEnd, false, "Factory");
 
-            const feeParams = await RootOrderTst.feeParams()
             const rewardAmount = TOKENS_TO_EXCHANGE_SPENT1 - ((TOKENS_TO_EXCHANGE_RECEIVE1*TOKENS_TO_EXCHANGE_RECEIVE2)/TOKENS_TO_EXCHANGE_SPENT2);
-            const comissionAmount = rewardAmount * (Number(feeParams.params.matchingNumerator) / Number(feeParams.params.matchingDenominator));
-
             const expectedFactoryTstWallet = new BigNumber(balanceFactoryTstStart.token || 0).plus(new BigNumber(rewardAmount)).toString();
 
             const expectedAccount3Bar = new BigNumber(balanceBarAcc3Start.token || 0).plus(new BigNumber(TOKENS_TO_EXCHANGE_RECEIVE1)).toString();
@@ -2048,7 +2312,7 @@ describe('OrderTest', () => {
             //Create Order 1
             const payload1 = await RootOrderBar.buildPayloadRoot(
                 0, zeroAddress, rootTokenBar.address, numberString(TOKENS_TO_EXCHANGE_RECEIVE1, barDecimals),
-                0, `0x${signer.publicKey}`
+                0, `0x${signer!.publicKey}`
                 )
 
             await locklift.tracing.trace(tstWallet3.transfer(
@@ -2062,7 +2326,7 @@ describe('OrderTest', () => {
             // Create Order 2
             const payload2 = await RootOrderBar.buildPayloadRoot(
                 0, zeroAddress, rootTokenReceive.address, numberString(TOKENS_TO_EXCHANGE_RECEIVE2, tstDecimals),
-                0, `0x${signer.publicKey}`
+                0, `0x${signer!.publicKey}`
             )
 
             await locklift.tracing.trace(barWallet4.transfer(
@@ -2086,11 +2350,8 @@ describe('OrderTest', () => {
 
             const balanceFactoryTstEnd = await accountTokenBalances(factoryWalletTst, tstDecimals);
             await displayLog(0, balanceFactoryTstEnd, false, "Factory");
-
-            const feeParams = await RootOrderTst.feeParams()
-
+            
             const rewardAmount = (TOKENS_TO_EXCHANGE_SPENT2/TOKENS_TO_EXCHANGE_RECEIVE1)* TOKENS_TO_EXCHANGE_SPENT1 - (TOKENS_TO_EXCHANGE_SPENT2/TOKENS_TO_EXCHANGE_SPENT2)*TOKENS_TO_EXCHANGE_RECEIVE2;
-            let comissionAmount = 0;
 
             const expectedFactoryTstWallet = new BigNumber(balanceFactoryTstStart.token || 0).plus(new BigNumber(rewardAmount)).toString();
             const expectedAccount3Bar = new BigNumber(balanceBarAcc3Start.token || 0).plus(new BigNumber(TOKENS_TO_EXCHANGE_SPENT2)).toString();
@@ -2135,7 +2396,7 @@ describe('OrderTest', () => {
             //Create Order 1
             const payload1 = await RootOrderBar.buildPayloadRoot(
                 0, zeroAddress, rootTokenBar.address, numberString(TOKENS_TO_EXCHANGE_RECEIVE1, barDecimals),
-                0, `0x${signer.publicKey}`
+                0, `0x${signer!.publicKey}`
                 )
 
             await locklift.tracing.trace(tstWallet3.transfer(
@@ -2149,7 +2410,7 @@ describe('OrderTest', () => {
             // Create Order 2
             const payload2 = await RootOrderBar.buildPayloadRoot(
                 0, zeroAddress, rootTokenReceive.address, numberString(TOKENS_TO_EXCHANGE_RECEIVE2, tstDecimals),
-                0, `0x${signer.publicKey}`
+                0, `0x${signer!.publicKey}`
             )
 
             await locklift.tracing.trace(barWallet4.transfer(
@@ -2174,12 +2435,7 @@ describe('OrderTest', () => {
             const balanceFactoryTstEnd = await accountTokenBalances(factoryWalletTst, tstDecimals);
             await displayLog(0, balanceFactoryTstEnd, false, "Factory");
 
-            const feeParams = await RootOrderTst.feeParams()
             const rewardAmount = (TOKENS_TO_EXCHANGE_RECEIVE1/TOKENS_TO_EXCHANGE_RECEIVE1)* TOKENS_TO_EXCHANGE_SPENT1 - (TOKENS_TO_EXCHANGE_RECEIVE1/TOKENS_TO_EXCHANGE_SPENT2)*TOKENS_TO_EXCHANGE_RECEIVE2;
-            let comissionAmount = 0;
-            if (Number(feeParams.params.matchingNumerator) != 0 && Number(feeParams.params.matchingDenominator) != 0) {
-                comissionAmount = rewardAmount * (Number(feeParams.params.matchingNumerator) / Number(feeParams.params.matchingDenominator));
-            }
 
             const expectedFactoryTstWallet = new BigNumber(balanceFactoryTstStart.token || 0).plus(new BigNumber(rewardAmount)).toString();
 
@@ -2326,7 +2582,7 @@ describe('OrderTest', () => {
                 name: "acceptTransfer"
             });
 
-            expect(depositCalls[0].payload.toString()).to.eq(expectPayload.toString(), "Fault payload success");
+            expect(depositCalls![0].payload.toString()).to.eq(expectPayload.toString(), "Fault payload success");
             expect(traceTree).to.call("acceptTransfer", barWallet4.address).withNamedArgs({
                 amount: "5000000000",
                 sender: order.address,
@@ -2399,7 +2655,7 @@ describe('OrderTest', () => {
                 name: "acceptTransfer"
             });
 
-            expect(depositCalls[0].payload.toString()).to.eq(expectPayload.toString(), "Fault payload cancel");
+            expect(depositCalls![0].payload.toString()).to.eq(expectPayload.toString(), "Fault payload cancel");
             expect(traceTree).to.call("acceptTransfer", barWallet4.address).withNamedArgs({
                 amount: "10000000000",
                 sender: order.address,
@@ -2455,7 +2711,7 @@ describe('OrderTest', () => {
                 name: "acceptTransfer"
             });
 
-            expect(depositCalls[0].payload.toString()).to.eq(expectPayload.toString(), "Fault payload cancel");
+            expect(depositCalls![0].payload.toString()).to.eq(expectPayload.toString(), "Fault payload cancel");
             expect(traceTree).to.call("acceptTransfer", tstWallet3.address).withNamedArgs({
                 amount: "10000000000",
                 sender: RootOrderBar.address,
@@ -2687,8 +2943,6 @@ describe('OrderTest', () => {
             const balanceBarAcc5Start = await accountTokenBalances(barWallet5, barDecimals);
             const balanceTstAcc5Start = await accountTokenBalances(tstWallet5, tstDecimals);
             await displayLog(balanceBarAcc5Start, balanceTstAcc5Start, true, "Account4");
-
-            const newBeneficiary = account8
 
             const balanceTstFactoryStart = await accountTokenBalances(FactoryWalletTst, tstDecimals);
             await displayLog(0, balanceTstFactoryStart, true, "Factory");
@@ -2924,13 +3178,17 @@ describe('OrderTest', () => {
             console.log(`Upgrade Order...`)
             const NEW_VERSION = 3
 
-            const testOrderCode = (await locklift.factory.getContractArtifacts("TestNewOrder")).code
+            const testOrderCode =
+              locklift.factory.getContractArtifacts('TestNewOrder').code;
 
             await factoryOrder.setOrderCode(testOrderCode)
             let orders:Address[] = [order.address];
             await factoryOrder.updateOrder(orders)
 
-            const newOrder = await locklift.factory.getDeployedContract("TestNewOrder", order.address);
+            const newOrder = locklift.factory.getDeployedContract(
+              'TestNewOrder',
+              order.address,
+            );
             const testMessage = (await newOrder.methods.newFunc().call()).value0;
             const newVersion = (await newOrder.methods.getDetails({answerId: 1}).call()).value0.version
 
@@ -2943,12 +3201,16 @@ describe('OrderTest', () => {
             console.log(`Upgrade OrderRoot...`)
             const NEW_VERSION = 4
 
-            const testFactoryCode = (await locklift.factory.getContractArtifacts("TestNewOrderRoot")).code
+            const testFactoryCode =
+              locklift.factory.getContractArtifacts('TestNewOrderRoot').code;
             await factoryOrder.setOrderRootCode(testFactoryCode)
             let roots:Address[] = [RootOrderBar.address];
             await factoryOrder.upgradeOrderRoot(roots)
 
-            const newRoot = await locklift.factory.getDeployedContract("TestNewOrderRoot", RootOrderBar.address)
+            const newRoot = locklift.factory.getDeployedContract(
+              'TestNewOrderRoot',
+              RootOrderBar.address,
+            );
             const testMessage = (await newRoot.methods.newFunc().call()).value0;
             const newVersion = (await newRoot.methods.getVersion({answerId: 1}).call()).value0;
 
@@ -2959,11 +3221,16 @@ describe('OrderTest', () => {
             console.log(`#############################\n`);
             console.log(`Upgrade OrderFactory...`)
 
-            const testFactoryCode = (await locklift.factory.getContractArtifacts("TestNewOrderFactory")).code
+            const testFactoryCode = locklift.factory.getContractArtifacts(
+              'TestNewOrderFactory',
+            ).code;
             const NEW_VERSION = 3
             await factoryOrder.upgrade(testFactoryCode, account1.address, NEW_VERSION)
 
-            const newFactory = await locklift.factory.getDeployedContract("TestNewOrderFactory", factoryOrder.address)
+            const newFactory = locklift.factory.getDeployedContract(
+              'TestNewOrderFactory',
+              factoryOrder.address,
+            );
             const testMessage = (await newFactory.methods.newFunc().call()).value0;
             const newVersion = (await newFactory.methods.getVersion({answerId: 1}).call()).value0;
             const owner = (await newFactory.methods.getOwner({answerId: 2}).call()).value0;
@@ -2978,11 +3245,14 @@ describe('OrderTest', () => {
 async function accountTokenBalances(contract: any, decimals: any): Promise<{ token: BigNumber }> {
     let token: BigNumber;
     await contract.balance()
+        // @ts-ignore
         .then(n => {
             token = new BigNumber(n).shiftedBy(- decimals);
+            // @ts-ignore
         }).catch(e => {/*ignored*/
         });
 
+    // @ts-ignore
     return {token}
 }
 
@@ -2992,7 +3262,7 @@ async function displayLog(balanceBar: any, balanceTst: any, start: any, accountT
         `${chalk.green(`${balanceTst !== undefined ? balanceTst.token + ' TST' : 'TST'}`)}`);
 }
 
-async function deployWallet(owner: Account, tokenRoot: Contract<FactorySource['TokenRootUpgradeable']>, rootOwner: Account, mintAmount: number = 500): Promise<Address> {
+async function deployWallet(owner: Account, tokenRoot: Contract<TokenRootUpgradeableAbi>, rootOwner: Account, mintAmount: number = 500): Promise<Address> {
     await locklift.tracing.trace(tokenRoot.methods
         .deployWallet({
             answerId: 1,
@@ -3019,8 +3289,8 @@ async function deployWallet(owner: Account, tokenRoot: Contract<FactorySource['T
 }
 
 function expectAmountFee(numerator: number, denominator: number, amount: number): number {
-    const fee: number = (numerator/denominator) * amount;
-    return fee
+    return (numerator/denominator) * amount;
+
 }
 
 function numberString(amount: number, decimals: number): string {

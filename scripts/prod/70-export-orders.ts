@@ -18,7 +18,7 @@ async function main() {
     continuation = result.continuation;
     hasResults = result.accounts.length === 100;
     for (const orderAddress of result.accounts) {
-      const Order = await locklift.factory.getDeployedContract(
+      const Order = locklift.factory.getDeployedContract(
         'Order',
         orderAddress,
       );

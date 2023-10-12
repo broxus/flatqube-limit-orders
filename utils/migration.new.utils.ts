@@ -9,7 +9,6 @@ import {
   logMigrationProcess,
   logMigrationSuccess,
 } from './log.utils';
-import * as constants from "constants";
 
 /**
  * Deploys new account with specified amount of EVER and saves migration
@@ -30,7 +29,7 @@ export const accountMigration = async (
 
   const { account } = await locklift.factory.accounts.addNewAccount({
     value: locklift.utils.toNano(amount.toString()),
-    publicKey: signer.publicKey,
+    publicKey: signer!.publicKey,
     type: WalletTypes.EverWallet,
     nonce: getRandomNonce()
   });
@@ -57,8 +56,6 @@ export const dexPairMigration = async (
   Contract<FactorySource['DexPair']>
 > => {
   // Get signer and account
-  const signer = await locklift.keystore.getSigner('0');
-
   logMigrationProcess(
     'dexPairMigration',
     'constructor',
@@ -85,7 +82,10 @@ export const dexPairMigration = async (
       right_root: rightTokenRoot.address,
   }).call();
 
-  const contract = await locklift.factory.getDeployedContract("DexPair", addressPair.value0);
+  const contract = locklift.factory.getDeployedContract(
+    'DexPair',
+    addressPair.value0,
+  );
   // Log and save address
   logMigrationSuccess(
     'dexPairMigration',
@@ -103,9 +103,6 @@ export const dexAccountMigration = async (
 ): Promise<
   Contract<FactorySource['DexAccount']>
 > => {
-  // Get signer and account
-  const signer = await locklift.keystore.getSigner('0');
-
   logMigrationProcess(
     'dexAccountMigration',
     'constructor',
@@ -130,7 +127,10 @@ export const dexAccountMigration = async (
       account_owner: account.address
   }).call();
 
-  const contract = await locklift.factory.getDeployedContract("DexAccount", addressAccount.value0);
+  const contract = locklift.factory.getDeployedContract(
+    'DexAccount',
+    addressAccount.value0,
+  );
 
   logMigrationSuccess(
     'dexAccountMigration',
@@ -159,7 +159,7 @@ export const dexVaultMigration = async (
   );
   const { contract } = await locklift.factory.deployContract({
       contract: 'DexVault',
-      publicKey: signer.publicKey,
+      publicKey: signer!.publicKey,
       initParams: {
         _nonce: locklift.utils.getRandomNonce()
       },
@@ -170,10 +170,12 @@ export const dexVaultMigration = async (
       value: locklift.utils.toNano(3),
     });
 
-  const platfromArtifacts = await locklift.factory.getContractArtifacts("DexPlatform")
-  const DexTokenVault = await  locklift.factory.getContractArtifacts("DexTokenVault")
-  const DexVaultLpTokenPendingV2 = await locklift.factory.getContractArtifacts('LpTokenPending');
-  const DexAccount = await locklift.factory.getContractArtifacts('DexAccount');
+  const platfromArtifacts =
+    locklift.factory.getContractArtifacts('DexPlatform');
+  const DexTokenVault = locklift.factory.getContractArtifacts('DexTokenVault');
+  const DexVaultLpTokenPendingV2 =
+    locklift.factory.getContractArtifacts('LpTokenPending');
+  const DexAccount = locklift.factory.getContractArtifacts('DexAccount');
 
   logMigrationProcess('dexVaultMigration', 'installPlatformOnce', 'installPlatformOnce...');
   await contract.methods.installPlatformOnce({code: platfromArtifacts.code}).send({
@@ -206,7 +208,7 @@ export const tokenFactoryMigration = async (
   );
   const { contract } = await locklift.factory.deployContract({
       contract: 'TokenFactory',
-      publicKey: signer.publicKey,
+      publicKey: signer!.publicKey,
       initParams: {
         randomNonce_: locklift.utils.getRandomNonce()
       },
@@ -217,7 +219,9 @@ export const tokenFactoryMigration = async (
     });
 
   logMigrationProcess('TokenFactoryMigration', 'setRootCode', 'setRootCode...');
-  const rootArtifact = await locklift.factory.getContractArtifacts("TokenRootUpgradeable")
+  const rootArtifact = locklift.factory.getContractArtifacts(
+    'TokenRootUpgradeable',
+  );
   await contract.methods.setRootCode({
     _rootCode: rootArtifact.code
   }).send({
@@ -226,7 +230,9 @@ export const tokenFactoryMigration = async (
   });
 
   logMigrationProcess('TokenFactoryMigration', 'setWalletCode', 'setWalletCode...');
-  const walletArtifact = await locklift.factory.getContractArtifacts("TokenWalletUpgradeable")
+  const walletArtifact = locklift.factory.getContractArtifacts(
+    'TokenWalletUpgradeable',
+  );
   await contract.methods.setWalletCode({
     _walletCode: walletArtifact.code
   }).send({
@@ -265,7 +271,7 @@ export const orderFactoryMigration = async (
   );
   const { contract } = await locklift.factory.deployContract({
     contract: 'OrderFactory',
-    publicKey: signer.publicKey,
+    publicKey: signer!.publicKey,
     initParams: {
       randomNonce: locklift.utils.getRandomNonce(),
       dexRoot: dexRoot.address
@@ -283,7 +289,7 @@ export const orderFactoryMigration = async (
     'setOrderRootCode...',
   );
 
-  const orderRootArtifacts = await locklift.factory.getContractArtifacts("OrderRoot")
+  const orderRootArtifacts = locklift.factory.getContractArtifacts('OrderRoot');
 
   await locklift.tracing.trace( contract.methods.setOrderRootCode({
     _orderRootCode: orderRootArtifacts.code
@@ -292,7 +298,8 @@ export const orderFactoryMigration = async (
     from: account.address
   }));
 
-  const orderRootPlatformArtifacts = await locklift.factory.getContractArtifacts("OrderRootPlatform")
+  const orderRootPlatformArtifacts =
+    locklift.factory.getContractArtifacts('OrderRootPlatform');
 
   await locklift.tracing.trace( contract.methods.setPlatformRootOrderCodeOnce({
     _orderRootPlatform: orderRootPlatformArtifacts.code
@@ -307,7 +314,7 @@ export const orderFactoryMigration = async (
     'setOrderCode...',
   );
 
-  const orderArtifacts = await locklift.factory.getContractArtifacts("Order")
+  const orderArtifacts = locklift.factory.getContractArtifacts('Order');
 
   await locklift.tracing.trace(contract.methods.setOrderCode({
     _orderCode: orderArtifacts.code
@@ -316,7 +323,8 @@ export const orderFactoryMigration = async (
     from: account.address
   }));
 
-  const orderPlatformArtifacts = await locklift.factory.getContractArtifacts('OrderPlatform')
+  const orderPlatformArtifacts =
+    locklift.factory.getContractArtifacts('OrderPlatform');
 
   await locklift.tracing.trace(contract.methods.setPlatformOrderCodeOnce({
     _orderPlatform: orderPlatformArtifacts.code
@@ -366,7 +374,6 @@ export const orderRootMigration = async (
   Contract<FactorySource['OrderRoot']>
 > => {
   // Get signer and account
-  const signer = await locklift.keystore.getSigner('0');
 
   logMigrationProcess(
     'OrderRootMigration',
@@ -375,23 +382,25 @@ export const orderRootMigration = async (
   );
 
   await locklift.tracing.trace(
-      orderFactory.methods.createOrderRoot(
-          {token: token.address, callbackId: callbackId}
-      ).send({
+    orderFactory.methods
+      .createOrderRoot({ token: token.address, callbackId: callbackId })
+      .send({
         amount: locklift.utils.toNano(6),
-        from: account.address
-      }
-  ), {allowedCodes: {compute: [60,null]}}
-  )
+        from: account.address,
+      }),
+    { allowedCodes: { compute: [60, null] } },
+  );
 
-  const orderRootAddress = await orderFactory.methods.getExpectedAddressOrderRoot({
-    answerId: 1,
-    token: token.address
-  }).call()
-  console.log(orderRootAddress.value0)
-  const contract = await locklift.factory.getDeployedContract(
-      'OrderRoot',
-      orderRootAddress.value0
+  const orderRootAddress = await orderFactory.methods
+    .getExpectedAddressOrderRoot({
+      answerId: 1,
+      token: token.address,
+    })
+    .call();
+  console.log(orderRootAddress.value0);
+  const contract = locklift.factory.getDeployedContract(
+    'OrderRoot',
+    orderRootAddress.value0,
   );
 
   // Log and save address
@@ -426,12 +435,10 @@ export const tokenRootMigration = async (
   const signer = await locklift.keystore.getSigner('0');
 
   // Load wallet and platform codes
-  const Wallet = await locklift.factory.getContractArtifacts(
+  const Wallet = locklift.factory.getContractArtifacts(
     'TokenWalletUpgradeable',
   );
-  const Platform = await locklift.factory.getContractArtifacts(
-    'TokenWalletPlatform',
-  );
+  const Platform = locklift.factory.getContractArtifacts('TokenWalletPlatform');
 
   const nonce = locklift.utils.getRandomNonce();
 
@@ -450,7 +457,7 @@ export const tokenRootMigration = async (
   });
   const { contract } = await locklift.factory.deployContract({
     contract: 'TokenRootUpgradeable',
-    publicKey: signer.publicKey,
+    publicKey: signer!.publicKey,
     initParams: {
       randomNonce_: nonce,
       deployer_: zeroAddress,
@@ -490,17 +497,18 @@ export const dexRootMigration = async (
 ): Promise<any> => {
   // Load signer and account
   const signer = await locklift.keystore.getSigner('0');
-  const DexPair = await locklift.factory.getContractArtifacts('DexPair');
-  const DexPlatform = await locklift.factory.getContractArtifacts('DexPlatform');
-  const DexAccount = await locklift.factory.getContractArtifacts('DexAccount');
-  const DexVaultLpTokenPendingV2 = await locklift.factory.getContractArtifacts('LpTokenPending');
-  const DexTokenVault = await locklift.factory.getContractArtifacts('DexTokenVault');
+  const DexPair = locklift.factory.getContractArtifacts('DexPair');
+  const DexPlatform = locklift.factory.getContractArtifacts('DexPlatform');
+  const DexAccount = locklift.factory.getContractArtifacts('DexAccount');
+  const DexVaultLpTokenPendingV2 =
+    locklift.factory.getContractArtifacts('LpTokenPending');
+  const DexTokenVault = locklift.factory.getContractArtifacts('DexTokenVault');
 
   logMigrationProcess('DexRoot', 'constructor', 'Deploying DexRoot...');
 
   const { contract } = await locklift.factory.deployContract({
     contract: 'DexRoot',
-    publicKey: signer.publicKey,
+    publicKey: signer!.publicKey,
     initParams: {
       _nonce: locklift.utils.getRandomNonce(),
     },
@@ -518,7 +526,7 @@ export const dexRootMigration = async (
   );
   const DexVault = (await locklift.factory.deployContract({
       contract: 'DexVault',
-      publicKey: signer.publicKey,
+      publicKey: signer!.publicKey,
       initParams: {
         _nonce: locklift.utils.getRandomNonce()
       },
@@ -628,7 +636,7 @@ export const multiScatterMigration = async (
 
   const { contract } = await locklift.factory.deployContract({
     contract: 'MultiScatter',
-    publicKey: signer.publicKey,
+    publicKey: signer!.publicKey,
     initParams: {
       nonce: getRandomNonce(),
     },
