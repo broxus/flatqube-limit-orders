@@ -7,6 +7,6 @@ node_modules/
 migration-log.json
 /locklift.migration.json
 /.env
-
+.cache
 # Ignore Mac files
 .DS_Store

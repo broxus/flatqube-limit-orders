@@ -6,12 +6,14 @@ import { Account } from 'everscale-standalone-client/nodejs';
 import {
     Address,
     Contract,
-    getRandomNonce,
     toNano,
-    WalletTypes,
     zeroAddress,
 } from 'locklift';
-import { FactorySource } from '../../build/factorySource';
+import {
+    TokenRootUpgradeableAbi,
+    TokenFactoryAbi,
+    DexAccountAbi
+} from '../build/factorySource';
 //@ts-ignore
 import {
     accountMigration,
@@ -20,7 +22,6 @@ import {
 
 import {
     dexAccountMigration,
-    dexPairMigration,
     dexRootMigration,
     orderFactoryMigration,
     orderRootMigration,
@@ -45,8 +46,8 @@ describe('MultiScatter', () => {
 
     let multiScatter: MSWrapper;
 
-    let rootTokenBar: Contract<FactorySource['TokenRootUpgradeable']>;
-    let rootTokenReceive: Contract<FactorySource['TokenRootUpgradeable']>;
+    let rootTokenBar: Contract<TokenRootUpgradeableAbi>;
+    let rootTokenReceive: Contract<TokenRootUpgradeableAbi>;
 
     let account1: Account;
 
@@ -70,8 +71,8 @@ describe('MultiScatter', () => {
     let barWallet6: TokenWallet;
     let tstWallet6: TokenWallet;
 
-    let tokenFactory: Contract<FactorySource['TokenFactory']>;
-    let dexAccount: Contract<FactorySource['DexAccount']>;
+    let tokenFactory: Contract<TokenFactoryAbi>;
+    let dexAccount: Contract<DexAccountAbi>;
 
     before('Deploy and load new migration', async () => {
         account1 = await accountMigration('10000', 'Account1', '1');
@@ -83,7 +84,7 @@ describe('MultiScatter', () => {
 
         tokenFactory = await tokenFactoryMigration(account1);
 
-        const [dexRoot, dexVault] = await dexRootMigration(account1, tokenFactory);
+        const [dexRoot, ] = await dexRootMigration(account1, tokenFactory);
 
         dexAccount = await dexAccountMigration(account1, dexRoot);
 
@@ -138,12 +139,6 @@ describe('MultiScatter', () => {
             account1,
         );
 
-        const factoryAddress = (
-            await rootTokenReceive.methods
-                .walletOf({ walletOwner: factoryOrder.address, answerId: 0 })
-                .call()
-        ).value0;
-
         const addressMS = await multiScatterMigration(
             1, true,
             account1,
@@ -170,7 +165,7 @@ describe('MultiScatter', () => {
             toNano(3),
         );
 
-        const TestFactory = await locklift.factory.getDeployedContract(
+        const TestFactory = locklift.factory.getDeployedContract(
             'OrderFactory',
             factoryOrder.address,
         );
@@ -359,7 +354,6 @@ describe('MultiScatter', () => {
     describe('Test MS', async () => {
         it('Create 2 order: full filled and part filled', async () => {
             console.log(`#############################\n`);
-            let amount = await barWallet3.balance();
             const balanceBarAcc3Start = await accountTokenBalances(
                 barWallet3,
                 barDecimals,
@@ -517,11 +511,16 @@ describe('MultiScatter', () => {
             expect(expectedAccount4Tst).to.equal(balanceTstAcc4End.token.toString(), 'Wrong Account4 Tst balance');
         });
         it('Upgrade MultiScatter', async () => {
-            const newCode = (await locklift.factory.getContractArtifacts("TestNewMultiScatter")).code
+            const newCode = locklift.factory.getContractArtifacts(
+              'TestNewMultiScatter',
+            ).code;
             const newVersion = 2;
             await multiScatter.upgrade(newCode, newVersion, account1.address)
 
-            const newMS = await locklift.factory.getDeployedContract("TestNewMultiScatter", multiScatter.address)
+            const newMS = locklift.factory.getDeployedContract(
+              'TestNewMultiScatter',
+              multiScatter.address,
+            );
             const currentVersion = (await newMS.methods.getDetails({answerId: 1}).call()).value2;
             const testMessage = (await newMS.methods.newFunc().call()).value0;
 
@@ -529,54 +528,63 @@ describe('MultiScatter', () => {
             expect(newVersion.toString()).to.equal(currentVersion.toString(), "Wrong MS new version")
         });
         it('TokensTransfer', async () => {
-            let amount = await barWallet3.balance();
-            const balanceBarAcc3Start = await accountTokenBalances(
-                barWallet3,
-                barDecimals,
-            );
-            const balanceTstAcc3Start = await accountTokenBalances(
-                tstWallet3,
-                tstDecimals,
-            );
-            await displayLog(
-                balanceBarAcc3Start,
-                balanceTstAcc3Start,
-                true,
-                'Account3',
-            );
+          const balanceBarAcc3Start = await accountTokenBalances(
+            barWallet3,
+            barDecimals,
+          );
+          const balanceTstAcc3Start = await accountTokenBalances(
+            tstWallet3,
+            tstDecimals,
+          );
+          await displayLog(
+            balanceBarAcc3Start,
+            balanceTstAcc3Start,
+            true,
+            'Account3',
+          );
 
-            const TOKENS_FOR_SEND = 10;
-            const signer1 = await locklift.keystore.getSigner("1");
-            const tokenWalletBarToken = await rootTokenBar.methods.walletOf({
-                walletOwner: multiScatter.address,
-                answerId: 1
-            }).call()
-            await locklift.tracing.trace(
-                barWallet3.transfer(
-                    numberString(TOKENS_FOR_SEND, barDecimals),
-                    multiScatter.address,
-                    '',
-                    toNano(3)
-                ), {allowedCodes: {compute: [60, null]}})
+          const TOKENS_FOR_SEND = 10;
+          const tokenWalletBarToken = await rootTokenBar.methods
+            .walletOf({
+              walletOwner: multiScatter.address,
+              answerId: 1,
+            })
+            .call();
+          await locklift.tracing.trace(
+            barWallet3.transfer(
+              numberString(TOKENS_FOR_SEND, barDecimals),
+              multiScatter.address,
+              '',
+              toNano(3),
+            ),
+            { allowedCodes: { compute: [60, null] } },
+          );
 
-            await multiScatter.proxyTokensTransfer(
-                tokenWalletBarToken.value0,
-                0.4,
-                numberString(TOKENS_FOR_SEND, barDecimals),
-                account3.address,
-                0,
-                account1.address,
-                true,
-                EMPTY_TVM_CELL,
-                true
-            );
+          await multiScatter.proxyTokensTransfer(
+            tokenWalletBarToken.value0,
+            0.4,
+            numberString(TOKENS_FOR_SEND, barDecimals),
+            account3.address,
+            0,
+            account1.address,
+            true,
+            EMPTY_TVM_CELL,
+            true,
+          );
 
-            const balanceBarAcc3End = await accountTokenBalances(barWallet3, barDecimals);
-            const balanceTstAcc3End = await accountTokenBalances(tstWallet3, tstDecimals);
-            displayLog(balanceBarAcc3End, balanceTstAcc3End, false, "Account3");
+          const balanceBarAcc3End = await accountTokenBalances(
+            barWallet3,
+            barDecimals,
+          );
+          const balanceTstAcc3End = await accountTokenBalances(
+            tstWallet3,
+            tstDecimals,
+          );
+          await displayLog(balanceBarAcc3End, balanceTstAcc3End, false, 'Account3');
 
-            expect(balanceBarAcc3Start.token.toString()).to.equal(balanceBarAcc3End.token.toString());
-
+          expect(balanceBarAcc3Start.token.toString()).to.equal(
+            balanceBarAcc3End.token.toString(),
+          );
         });
         it('SendGas', async() => {
             const EverAccountStart = new BigNumber(await locklift.provider.getBalance(account3.address)).shiftedBy(-9).toString();
@@ -600,13 +608,16 @@ async function accountTokenBalances(
     let token: BigNumber;
     await contract
         .balance()
+        // @ts-ignore
         .then((n) => {
             token = new BigNumber(n).shiftedBy(-decimals);
         })
+        // @ts-ignore
         .catch((e) => {
             /*ignored*/
         });
 
+    // @ts-ignore
     return { token };
 }
 
@@ -631,7 +642,7 @@ async function displayLog(
 
 async function deployWallet(
     owner: Account,
-    tokenRoot: Contract<FactorySource['TokenRootUpgradeable']>,
+    tokenRoot: Contract<TokenRootUpgradeableAbi>,
     rootOwner: Account,
     mintAmount: number = 500,
 ): Promise<Address> {
@@ -662,15 +673,6 @@ async function deployWallet(
             .send({ amount: toNano(2), from: rootOwner.address }),
     );
     return address.value0;
-}
-
-function expectAmountFee(
-    numerator: number,
-    denominator: number,
-    amount: number,
-): number {
-    const fee: number = (numerator / denominator) * amount;
-    return fee;
 }
 
 function numberString(amount: number, decimals: number): string {

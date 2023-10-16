@@ -1,22 +1,22 @@
 import {Address, Contract} from "locklift";
 // @ts-ignore
-import {FactorySource} from "../../build/factorySource";
+import {OrderRootAbi} from "../../build/factorySource";
 import {Account} from 'locklift/everscale-client'
 import {OrderWrapper} from "./order";
 
 export class OrderRoot {
-    public contract: Contract<FactorySource["OrderRoot"]>;
+    public contract: Contract<OrderRootAbi>;
     public _owner: Account | null;
     public address: Address;
 
-    constructor(order_contract: Contract<FactorySource["OrderRoot"]>, order_owner: Account | null) {
+    constructor(order_contract: Contract<OrderRootAbi>, order_owner: Account | null) {
         this.contract = order_contract;
         this._owner = order_owner;
         this.address = this.contract.address;
     }
 
     static async from_addr(addr: Address, owner: Account | null) {
-        const factory = await locklift.factory.getDeployedContract('OrderRoot', addr);
+        const factory = locklift.factory.getDeployedContract('OrderRoot', addr);
         return new OrderRoot(factory, owner);
     }
 

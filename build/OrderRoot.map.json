@@ -3008,6 +3008,44 @@
         "line": 751
       }
     },
+    "4b80a3fd0b84578ad6ad8c7627e022ce0e7888d4eb29ed10758a56687d8ef7f4": {
+      "40": {
+        "filename": "../contracts/OrderRoot.tsol",
+        "line": 440
+      },
+      "88": {
+        "filename": "../contracts/OrderRoot.tsol",
+        "line": 440
+      },
+      "96": {
+        "filename": "../contracts/OrderRoot.tsol",
+        "line": 440
+      },
+      "112": {
+        "filename": "../contracts/OrderRoot.tsol",
+        "line": 441
+      },
+      "120": {
+        "filename": "../contracts/OrderRoot.tsol",
+        "line": 441
+      },
+      "136": {
+        "filename": "../contracts/OrderRoot.tsol",
+        "line": 441
+      },
+      "144": {
+        "filename": "../contracts/OrderRoot.tsol",
+        "line": 441
+      },
+      "160": {
+        "filename": "../contracts/OrderRoot.tsol",
+        "line": 441
+      },
+      "168": {
+        "filename": "../contracts/OrderRoot.tsol",
+        "line": 441
+      }
+    },
     "5050f24c4d5b77913a6be3b72d8485664a62009d5a34226addfac67bbddab407": {
       "0": {
         "filename": "OrderRoot.code",
@@ -3761,7 +3799,7 @@
     "61ab4641fa30d9310391025086eec65d200d79268e1b7cd402565e01ba64be3c": {
       "0": {
         "filename": "OrderRoot.code",
-        "line": 2456
+        "line": 2617
       }
     },
     "6bb808a228c856534d66d2c07c79235b61f613e155a5888c00f3b0c7f55df8af": {
@@ -5313,44 +5351,6 @@
       }
     },
     "96a296d224f285c67bee93c30f8a309157f0daa35dc5b87e410b78630a09cfc7": {},
-    "96a94830d2106f2331e3c514383298eeab44cc4fd7c52b71dfe2e8a255b32a56": {
-      "38": {
-        "filename": "../contracts/OrderRoot.tsol",
-        "line": 440
-      },
-      "86": {
-        "filename": "../contracts/OrderRoot.tsol",
-        "line": 440
-      },
-      "94": {
-        "filename": "../contracts/OrderRoot.tsol",
-        "line": 440
-      },
-      "110": {
-        "filename": "../contracts/OrderRoot.tsol",
-        "line": 441
-      },
-      "118": {
-        "filename": "../contracts/OrderRoot.tsol",
-        "line": 441
-      },
-      "134": {
-        "filename": "../contracts/OrderRoot.tsol",
-        "line": 441
-      },
-      "142": {
-        "filename": "../contracts/OrderRoot.tsol",
-        "line": 441
-      },
-      "158": {
-        "filename": "../contracts/OrderRoot.tsol",
-        "line": 441
-      },
-      "166": {
-        "filename": "../contracts/OrderRoot.tsol",
-        "line": 441
-      }
-    },
     "9ec603ee9616b2323b632f5844c90b96305a13a4698e877257d68650d17574e9": {
       "0": {
         "filename": "../contracts/OrderRoot.tsol",

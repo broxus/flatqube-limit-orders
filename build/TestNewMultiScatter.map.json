@@ -1478,8 +1478,8 @@
     },
     "61ab4641fa30d9310391025086eec65d200d79268e1b7cd402565e01ba64be3c": {
       "0": {
-        "filename": "../contracts/tests/TestNewMultiScatter.tsol",
-        "line": 242
+        "filename": "TestNewMultiScatter.code",
+        "line": 1230
       }
     },
     "61f6c23954ff8ab23a8e59943185934536d70ecb97539a6c90edb46f0f74e44d": {
@@ -3925,6 +3925,132 @@
         "line": 71
       }
     },
+    "b4c9757a15d61e3e770e4d475b93cd48ad1d57eb37764c169da08f6e90db4365": {
+      "38": {
+        "filename": "../contracts/tests/TestNewMultiScatter.tsol",
+        "line": 241
+      },
+      "86": {
+        "filename": "../contracts/tests/TestNewMultiScatter.tsol",
+        "line": 241
+      },
+      "94": {
+        "filename": "../contracts/tests/TestNewMultiScatter.tsol",
+        "line": 241
+      },
+      "110": {
+        "filename": "../contracts/tests/TestNewMultiScatter.tsol",
+        "line": 242
+      },
+      "118": {
+        "filename": "../contracts/tests/TestNewMultiScatter.tsol",
+        "line": 242
+      },
+      "134": {
+        "filename": "../contracts/tests/TestNewMultiScatter.tsol",
+        "line": 242
+      },
+      "142": {
+        "filename": "../contracts/tests/TestNewMultiScatter.tsol",
+        "line": 242
+      },
+      "158": {
+        "filename": "../contracts/tests/TestNewMultiScatter.tsol",
+        "line": 242
+      },
+      "166": {
+        "filename": "../contracts/tests/TestNewMultiScatter.tsol",
+        "line": 242
+      },
+      "182": {
+        "filename": "../contracts/tests/TestNewMultiScatter.tsol",
+        "line": 242
+      },
+      "190": {
+        "filename": "../contracts/tests/TestNewMultiScatter.tsol",
+        "line": 242
+      },
+      "206": {
+        "filename": "../contracts/tests/TestNewMultiScatter.tsol",
+        "line": 242
+      },
+      "214": {
+        "filename": "../contracts/tests/TestNewMultiScatter.tsol",
+        "line": 242
+      },
+      "230": {
+        "filename": "../contracts/tests/TestNewMultiScatter.tsol",
+        "line": 242
+      },
+      "238": {
+        "filename": "../contracts/tests/TestNewMultiScatter.tsol",
+        "line": 242
+      },
+      "254": {
+        "filename": "../contracts/tests/TestNewMultiScatter.tsol",
+        "line": 243
+      },
+      "262": {
+        "filename": "../contracts/tests/TestNewMultiScatter.tsol",
+        "line": 243
+      },
+      "278": {
+        "filename": "../contracts/tests/TestNewMultiScatter.tsol",
+        "line": 243
+      },
+      "294": {
+        "filename": "../contracts/tests/TestNewMultiScatter.tsol",
+        "line": 243
+      },
+      "302": {
+        "filename": "../contracts/tests/TestNewMultiScatter.tsol",
+        "line": 243
+      },
+      "310": {
+        "filename": "../contracts/tests/TestNewMultiScatter.tsol",
+        "line": 243
+      },
+      "318": {
+        "filename": "../contracts/tests/TestNewMultiScatter.tsol",
+        "line": 243
+      },
+      "334": {
+        "filename": "../contracts/tests/TestNewMultiScatter.tsol",
+        "line": 243
+      },
+      "350": {
+        "filename": "../contracts/tests/TestNewMultiScatter.tsol",
+        "line": 243
+      },
+      "366": {
+        "filename": "../contracts/tests/TestNewMultiScatter.tsol",
+        "line": 243
+      },
+      "374": {
+        "filename": "../contracts/tests/TestNewMultiScatter.tsol",
+        "line": 243
+      },
+      "390": {
+        "filename": "../contracts/tests/TestNewMultiScatter.tsol",
+        "line": 243
+      },
+      "406": {
+        "filename": "../contracts/tests/TestNewMultiScatter.tsol",
+        "line": 243
+      },
+      "422": {
+        "filename": "../contracts/tests/TestNewMultiScatter.tsol",
+        "line": 243
+      },
+      "438": {
+        "filename": "../contracts/tests/TestNewMultiScatter.tsol",
+        "line": 243
+      },
+      "454": {
+        "filename": "../contracts/tests/TestNewMultiScatter.tsol",
+        "line": 243
+      }
+    },
     "c0d7cade1208acae61bfcb13c10ba2c983fa593adb4411f9a660ec5470cebd9d": {
       "0": {
         "filename": "../contracts/libraries/MultiScatterPayload.tsol",
@@ -4939,132 +5065,6 @@
       "0": {
         "filename": "../contracts/tests/TestNewMultiScatter.tsol",
         "line": 236
-      }
-    },
-    "eba670607bc84b7ab89f1efe75b185fe780c4860406f1b43043acff1250b5b0f": {
-      "4": {
-        "filename": "../contracts/tests/TestNewMultiScatter.tsol",
-        "line": 241
-      },
-      "52": {
-        "filename": "../contracts/tests/TestNewMultiScatter.tsol",
-        "line": 241
-      },
-      "60": {
-        "filename": "../contracts/tests/TestNewMultiScatter.tsol",
-        "line": 241
-      },
-      "76": {
-        "filename": "../contracts/tests/TestNewMultiScatter.tsol",
-        "line": 242
-      },
-      "84": {
-        "filename": "../contracts/tests/TestNewMultiScatter.tsol",
-        "line": 242
-      },
-      "100": {
-        "filename": "../contracts/tests/TestNewMultiScatter.tsol",
-        "line": 242
-      },
-      "108": {
-        "filename": "../contracts/tests/TestNewMultiScatter.tsol",
-        "line": 242
-      },
-      "124": {
-        "filename": "../contracts/tests/TestNewMultiScatter.tsol",
-        "line": 242
-      },
-      "132": {
-        "filename": "../contracts/tests/TestNewMultiScatter.tsol",
-        "line": 242
-      },
-      "148": {
-        "filename": "../contracts/tests/TestNewMultiScatter.tsol",
-        "line": 242
-      },
-      "156": {
-        "filename": "../contracts/tests/TestNewMultiScatter.tsol",
-        "line": 242
-      },
-      "172": {
-        "filename": "../contracts/tests/TestNewMultiScatter.tsol",
-        "line": 242
-      },
-      "180": {
-        "filename": "../contracts/tests/TestNewMultiScatter.tsol",
-        "line": 242
-      },
-      "196": {
-        "filename": "../contracts/tests/TestNewMultiScatter.tsol",
-        "line": 242
-      },
-      "204": {
-        "filename": "../contracts/tests/TestNewMultiScatter.tsol",
-        "line": 242
-      },
-      "220": {
-        "filename": "../contracts/tests/TestNewMultiScatter.tsol",
-        "line": 243
-      },
-      "228": {
-        "filename": "../contracts/tests/TestNewMultiScatter.tsol",
-        "line": 243
-      },
-      "244": {
-        "filename": "../contracts/tests/TestNewMultiScatter.tsol",
-        "line": 243
-      },
-      "260": {
-        "filename": "../contracts/tests/TestNewMultiScatter.tsol",
-        "line": 243
-      },
-      "268": {
-        "filename": "../contracts/tests/TestNewMultiScatter.tsol",
-        "line": 243
-      },
-      "276": {
-        "filename": "../contracts/tests/TestNewMultiScatter.tsol",
-        "line": 243
-      },
-      "284": {
-        "filename": "../contracts/tests/TestNewMultiScatter.tsol",
-        "line": 243
-      },
-      "300": {
-        "filename": "../contracts/tests/TestNewMultiScatter.tsol",
-        "line": 243
-      },
-      "316": {
-        "filename": "../contracts/tests/TestNewMultiScatter.tsol",
-        "line": 243
-      },
-      "332": {
-        "filename": "../contracts/tests/TestNewMultiScatter.tsol",
-        "line": 243
-      },
-      "340": {
-        "filename": "../contracts/tests/TestNewMultiScatter.tsol",
-        "line": 243
-      },
-      "356": {
-        "filename": "../contracts/tests/TestNewMultiScatter.tsol",
-        "line": 243
-      },
-      "372": {
-        "filename": "../contracts/tests/TestNewMultiScatter.tsol",
-        "line": 243
-      },
-      "388": {
-        "filename": "../contracts/tests/TestNewMultiScatter.tsol",
-        "line": 243
-      },
-      "404": {
-        "filename": "../contracts/tests/TestNewMultiScatter.tsol",
-        "line": 243
-      },
-      "420": {
-        "filename": "../contracts/tests/TestNewMultiScatter.tsol",
-        "line": 243
       }
     },
     "eda94e0620b22aae63082be817a44fcc45aeadeaf9751c74c451ccf74cea6793": {

@@ -11,7 +11,7 @@ const chunkify = <T>(arr: T[], size: number): T[][] =>
   );
 
 async function main() {
-  const OrderFactory = await locklift.factory.getDeployedContract(
+  const OrderFactory = locklift.factory.getDeployedContract(
     'OrderFactory',
     new Address(ORDER_FACTORY_ADDRESS),
   );

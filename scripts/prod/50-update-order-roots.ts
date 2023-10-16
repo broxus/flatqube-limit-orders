@@ -10,12 +10,12 @@ const chunkify = <T>(arr: T[], size: number): T[][] =>
 );
 
 async function main(){
-    const OrderFactory = await locklift.factory.getDeployedContract(
+    const OrderFactory = locklift.factory.getDeployedContract(
         'OrderFactory',
         new Address(ORDER_FACTORY_ADDRESS),
     );
 
-    const limitOrdersManager = await OrderFactory.methods
+    const limitOrdersManager = OrderFactory.methods
         .getManager({ answerId: 0 })
         .call()
         .then((m) => m.value0);

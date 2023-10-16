@@ -6,11 +6,11 @@ const ORDER_FACTORY_ADDRESS =
 const orderRootsForUpdate: Address[] = [];
 
 async function main() {
-  const OrderFactory = await locklift.factory.getDeployedContract(
+  const OrderFactory = locklift.factory.getDeployedContract(
     'OrderFactory',
     new Address(ORDER_FACTORY_ADDRESS),
   );
-  const Order = await locklift.factory.getContractArtifacts('Order');
+  const Order = locklift.factory.getContractArtifacts('Order');
 
   const limitOrdersManager = await OrderFactory.methods
     .getManager({ answerId: 0 })

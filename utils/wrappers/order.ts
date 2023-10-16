@@ -1,19 +1,19 @@
 import {Address, Contract, Signer, toNano, zeroAddress} from "locklift";
-import {FactorySource} from "../../build/factorySource";
+import {OrderAbi, TestNewOrderBadAbi} from "../../build/factorySource";
 import {Account} from 'locklift/everscale-client'
 export class OrderWrapper {
-    public contract: Contract<FactorySource["Order"]> | Contract<FactorySource["TestNewOrderBad"]>;
+    public contract: Contract<OrderAbi> | Contract<TestNewOrderBadAbi>;
     public _owner: Account | null;
     public address: Address;
 
-    constructor(order_contract: Contract<FactorySource["Order"]> | Contract<FactorySource["TestNewOrderBad"]>, order_owner: Account | null) {
+    constructor(order_contract: Contract<OrderAbi> | Contract<TestNewOrderBadAbi>, order_owner: Account | null) {
         this.contract = order_contract;
         this._owner = order_owner;
         this.address = this.contract.address;
     }
 
     static async from_addr(addr: Address, owner: Account | null) {
-        const order = await locklift.factory.getDeployedContract('Order', addr);
+        const order = locklift.factory.getDeployedContract('Order', addr);
         return new OrderWrapper(order, owner);
     }
 
@@ -175,7 +175,7 @@ export class OrderWrapper {
         callbackId: number = 0
     ){
         return await locklift.tracing.trace(this.contract.methods.cancel({callbackId: callbackId}).send({
-                amount: toNano(3), from: this._owner.address
+                amount: toNano(3), from: this._owner!.address
             }), {allowedCodes:{compute:[60]}});
     }
 

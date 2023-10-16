@@ -14,7 +14,10 @@ export class OrderFactory {
     }
 
     static async from_addr(addr: Address, owner: Account | null) {
-        const factory = await locklift.factory.getDeployedContract('OrderFactory', addr);
+        const factory = locklift.factory.getDeployedContract(
+          'OrderFactory',
+          addr,
+        );
         return new OrderFactory(factory, owner);
     }
 
@@ -120,7 +123,7 @@ export class OrderFactory {
             _manager: manager
           }).send({
             amount: toNano(1),
-            from: this._owner.address
+            from: this._owner!.address
             }), {allowedCodes: {compute: [60]}});
     }
 

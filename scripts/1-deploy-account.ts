@@ -22,7 +22,7 @@ async function main() {
   const { account } = await locklift.factory.accounts.addNewAccount({
     type: WalletTypes.EverWallet,
     value: toNano(balance),
-    publicKey: signer.publicKey,
+    publicKey: signer!.publicKey,
   });
 
   await locklift.provider.sendMessage({
